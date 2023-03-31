@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Github Search</string>
+    <string name="reload">Перезагрузка</string>
+    <string name="error">Ошибка</string>
+</resources>
