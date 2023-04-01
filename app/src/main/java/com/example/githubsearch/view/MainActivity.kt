@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         MAIN = this
         navController = Navigation.findNavController(this, R.id.nav_host)
-
     }
 
     override fun onDestroy() {
