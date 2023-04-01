@@ -19,7 +19,7 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentUser = arguments?.getSerializable("User") as Users
+        currentUser = arguments?.getSerializable("user") as Users
         init()
 
     }
