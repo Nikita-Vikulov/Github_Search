@@ -7,7 +7,7 @@ import retrofit2.Response
 
 class RetrofitRepository {
     suspend fun getUsers(): Response<UsersResponse> {
-        return RetrofitInstance.api.getUsers()
+        return RetrofitInstance.api.getSearchUsers()
     }
 }
 

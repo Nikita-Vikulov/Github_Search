@@ -29,11 +29,6 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
         holder.bind(listUsers[position])
     }
 
-
-    override fun getItemCount(): Int {
-        return listUsers.size
-    }
-
     inner class UsersViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -49,7 +44,11 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
         }
     }
 
-    fun setList(list: List<Users>) {
+    override fun getItemCount(): Int {
+        return listUsers.size
+    }
+
+    fun setList(list: ArrayList<Users>) {
         listUsers = list
         notifyDataSetChanged()
     }

@@ -14,7 +14,6 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
     }
 
     override fun onAttach(context: Context) {

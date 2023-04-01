@@ -3,5 +3,5 @@ package com.example.githubsearch.model
 data class UsersResponse(
     val total_count: Int,
     val incomplete_results: Boolean,
-    val items: List<Users>?
+    val items: ArrayList<Users>?
 )

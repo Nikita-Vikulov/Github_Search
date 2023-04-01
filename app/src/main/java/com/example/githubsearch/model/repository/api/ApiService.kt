@@ -5,6 +5,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("/users?q=tom")
-    suspend fun getUsers(): Response<UsersResponse>
+    @GET("/search/users?q=tom")
+    suspend fun getSearchUsers(): Response<UsersResponse>
 }
