@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubsearch.BASE_URL
 import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
@@ -35,11 +34,11 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
         fun bind(users: Users) {
             with(binding) {
                 tvLogin.text = users.login
-                /*Glide.with(MAIN)
-                    .load("${BASE_URL}${listUsers[position].avatar_url}")
+                Glide.with(MAIN)
+                    .load(listUsers[position].avatar_url)
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
-                    .into(avatarImageView)*/
+                    .into(avatarImageView)
             }
         }
     }
@@ -55,7 +54,7 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
 
     override fun onViewAttachedToWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener {
-            UsersFragment.clickMovie(listUsers[holder.adapterPosition])
+            UsersFragment.clickUser(listUsers[holder.adapterPosition])
         }
     }
 

@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/avatar_image_view"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="4dp"
         tools:src="@color/colorAccent" />
 
     <TextView
