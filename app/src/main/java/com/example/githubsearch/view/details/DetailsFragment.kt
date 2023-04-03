@@ -1,7 +1,9 @@
 package com.example.githubsearch.view.details
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
@@ -19,9 +21,9 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(false)
         currentUser = arguments?.getSerializable("user") as Users
         init()
-
     }
 
     private fun init(){
@@ -35,9 +37,5 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(avatarImageView)
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 }

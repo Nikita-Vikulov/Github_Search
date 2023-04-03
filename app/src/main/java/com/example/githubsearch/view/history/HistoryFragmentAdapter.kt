@@ -1,8 +1,7 @@
-package com.example.githubsearch.view.users
+package com.example.githubsearch.view.history
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubsearch.MAIN
@@ -10,26 +9,28 @@ import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
 
-class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersViewHolder>() {
+
+class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.HistoryViewHolder>() {
 
     private var listUsers = emptyList<Users>()
 
     override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ): UsersViewHolder {
+        parent: ViewGroup,
+        viewType: Int
+    ): HistoryViewHolder {
         val binding = ItemUserBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return UsersViewHolder(binding)
+        return HistoryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         holder.bind(listUsers[position])
     }
 
-    inner class UsersViewHolder(private val binding: ItemUserBinding) :
+    inner class HistoryViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(users: Users) {
@@ -43,23 +44,22 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
             }
         }
     }
+    fun setList(list: List<Users>) {
+        listUsers = list
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int {
         return listUsers.size
     }
 
-    fun setList(list: ArrayList<Users>) {
-        listUsers = list
-        notifyDataSetChanged()
-    }
-
-    override fun onViewAttachedToWindow(holder: UsersViewHolder) {
+    override fun onViewAttachedToWindow(holder: HistoryViewHolder) {
         holder.itemView.setOnClickListener {
-            UsersFragment.clickUser(listUsers[holder.bindingAdapterPosition])
+            HistoryFragment.clickUser(listUsers[holder.bindingAdapterPosition])
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: UsersViewHolder) {
+    override fun onViewDetachedFromWindow(holder: HistoryViewHolder) {
         holder.itemView.setOnClickListener(null)
     }
 }
