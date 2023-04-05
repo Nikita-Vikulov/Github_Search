@@ -1,18 +1,14 @@
 package com.example.githubsearch.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ActivityMainBinding
-import com.example.githubsearch.view.history.HistoryFragment
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

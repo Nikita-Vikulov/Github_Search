@@ -1,14 +1,11 @@
 package com.example.githubsearch.view.details
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.githubsearch.REALIZATION
-import com.example.githubsearch.model.Users
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+/*class DetailsViewModel(val repository: UsersRepository) : ViewModel() {
 
-class DetailsViewModel : ViewModel() {
-    fun insert(users: Users, onSuccess: () -> Unit) =
+    fun insert(users: Users) = viewModelScope.launch {
+        repository.insertUser(users)
+    }*/
+   /* fun insert(users: Users, onSuccess: () -> Unit) =
         viewModelScope.launch(Dispatchers.IO) {
             REALIZATION.insertUser(users) {
                 onSuccess()
@@ -20,5 +17,4 @@ class DetailsViewModel : ViewModel() {
             REALIZATION.deleteUser(users) {
                 onSuccess()
             }
-        }
-}
+        }*/

@@ -1,21 +1,26 @@
 package com.example.githubsearch.view.history
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.BaseFragment
 import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentHistoryBinding
 import com.example.githubsearch.model.Users
+import com.example.githubsearch.view.UsersApplication
+import com.example.githubsearch.view.users.UsersViewModel
+import com.example.githubsearch.view.users.ViewModelFactory
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     private lateinit var recyclerView: RecyclerView
     private val adapter by lazy { HistoryFragmentAdapter() }
+    private val usersViewModel: UsersViewModel by viewModels {
+        ViewModelFactory((requireActivity().application as UsersApplication).repository)
+    }
 
     override fun getViewBinding(container: ViewGroup?): FragmentHistoryBinding =
         FragmentHistoryBinding.inflate(layoutInflater, container, false)
@@ -27,12 +32,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
     }
 
     private fun init() {
-        val viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
+        //val viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         recyclerView = binding.recyclerViewHistory
         recyclerView.adapter = adapter
 
-        viewModel.getAllUsers().observe(viewLifecycleOwner) { list ->
-            adapter.setList(list.asReversed())
+        usersViewModel.allUsers.observe(viewLifecycleOwner) { users ->
+            users.let { adapter.setList(it) }
         }
     }
 

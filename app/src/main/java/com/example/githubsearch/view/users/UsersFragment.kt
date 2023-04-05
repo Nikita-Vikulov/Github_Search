@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.BaseFragment
 import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentUsersBinding
 import com.example.githubsearch.model.Users
+import com.example.githubsearch.view.UsersApplication
 
 class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     private lateinit var recyclerView: RecyclerView
     private val adapter by lazy { UsersFragmentAdapter() }
+
+    private val usersViewModel: UsersViewModel by viewModels {
+        ViewModelFactory((requireActivity().application as UsersApplication).repository)
+    }
 
     override fun getViewBinding(container: ViewGroup?): FragmentUsersBinding =
         FragmentUsersBinding.inflate(layoutInflater, container, false)
@@ -25,25 +30,22 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     }
 
     private fun init() {
-        val viewModel = ViewModelProvider(this)[UsersViewModel::class.java]
-        viewModel.initDatabase()
         recyclerView = binding.recyclerViewUsers
         recyclerView.adapter = adapter
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.getUsers(query.toString())
+                usersViewModel.getUsers(query.toString())
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.getUsers(newText.toString())
+                usersViewModel.getUsers(newText.toString())
                 return false
             }
 
         })
-
-        viewModel.myUsers.observe(viewLifecycleOwner) { list ->
-            list.body()?.items?.let { adapter.setList(it) }
+        usersViewModel.myUsers.observe(viewLifecycleOwner) { list ->
+            list.body()?.items?.let { adapter.setList(it) } // сделать через difutils
         }
     }
 
