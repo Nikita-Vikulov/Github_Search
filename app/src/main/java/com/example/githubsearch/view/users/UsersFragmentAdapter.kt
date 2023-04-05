@@ -2,13 +2,15 @@ package com.example.githubsearch.view.users
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
 
-class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersViewHolder>() {
+class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(WORDS_COMPARATOR) {
 
     private var listUsers = emptyList<Users>()
 
@@ -59,5 +61,16 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
 
     override fun onViewDetachedFromWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener(null)
+    }
+    companion object {
+        private val WORDS_COMPARATOR = object : DiffUtil.ItemCallback<Users>() {
+            override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
+                return oldItem === newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
     }
 }

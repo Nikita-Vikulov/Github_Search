@@ -11,14 +11,14 @@ import com.example.githubsearch.databinding.FragmentDetailsBinding
 import com.example.githubsearch.model.Users
 
 class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
-    private lateinit var currentUser: Users
+    private lateinit var currentUser: Users //decorator для карточек
     override fun getViewBinding(container: ViewGroup?): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        currentUser = arguments?.getSerializable("user") as Users
+        currentUser = arguments?.getSerializable("user") as Users // parceble
         init()
     }
 

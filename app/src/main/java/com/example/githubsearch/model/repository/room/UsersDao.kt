@@ -1,9 +1,9 @@
 package com.example.githubsearch.model.repository.room
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 import com.example.githubsearch.model.Users
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -16,5 +16,5 @@ interface UsersDao {
     suspend fun delete(users: Users)
 
     @Query("SELECT * from users_table")
-    fun getAllUsers():LiveData<List<Users>>
+    fun getAllUsers(): Flow<List<Users>>
 }

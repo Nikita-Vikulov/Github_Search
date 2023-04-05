@@ -26,7 +26,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
 
     private fun init() {
         val viewModel = ViewModelProvider(this)[UsersViewModel::class.java]
-        viewModel.initDatabase()
+        //viewModel.initDatabase()
         recyclerView = binding.recyclerViewUsers
         recyclerView.adapter = adapter
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -43,7 +43,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
         })
 
         viewModel.myUsers.observe(viewLifecycleOwner) { list ->
-            list.body()?.items?.let { adapter.setList(it) }
+            list.body()?.items?.let { adapter.setList(it) } // сделать через difutils
         }
     }
 
