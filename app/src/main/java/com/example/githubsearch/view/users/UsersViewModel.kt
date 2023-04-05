@@ -1,9 +1,10 @@
 package com.example.githubsearch.view.users
 
 import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.*
-import com.example.githubsearch.MAIN
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.REALIZATION
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.model.UsersResponse
@@ -13,7 +14,8 @@ import com.example.githubsearch.model.repository.room.repository.UsersRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class UsersViewModel(application: Application) : AndroidViewModel(application) {
+class UsersViewModel(application: Application) : AndroidViewModel(application) { // сделать в конструкторе репозиторий и инстанс БД
+
     private val repository = RetrofitRepository()
     val myUsers: MutableLiveData<Response<UsersResponse>> = MutableLiveData()
     private val context = application
@@ -25,12 +27,8 @@ class UsersViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun initDatabase(){
-        try{
         val daoUsers = UsersRoomDatabase.getInstance(context).getUsersDao()
         REALIZATION = UsersRepositoryRealization(daoUsers)
-        } catch (e: Exception) {
-            Toast.makeText(MAIN, e.message, Toast.LENGTH_SHORT).show()
-        }
     }
 
     fun getAllUsers(): LiveData<List<Users>> {

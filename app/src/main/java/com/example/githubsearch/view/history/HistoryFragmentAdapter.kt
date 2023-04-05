@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
@@ -36,7 +35,7 @@ class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.Histo
         fun bind(users: Users) {
             with(binding) {
                 tvLogin.text = users.login
-                Glide.with(MAIN)
+                Glide.with(root.context)
                     .load(users.avatar_url)
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)

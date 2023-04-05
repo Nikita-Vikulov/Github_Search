@@ -1,15 +1,11 @@
 package com.example.githubsearch.view.details
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubsearch.BaseFragment
-import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentDetailsBinding
 import com.example.githubsearch.model.Users
@@ -31,7 +27,7 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
         viewModel.insert(currentUser){}
         with(binding) {
             tvLogin.text = currentUser.login
-            Glide.with(MAIN)
+            Glide.with(root.context)
                 .load(currentUser.avatar_url)
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)

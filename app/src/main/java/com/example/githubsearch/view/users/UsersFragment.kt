@@ -1,10 +1,10 @@
 package com.example.githubsearch.view.users
 
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.BaseFragment
 import com.example.githubsearch.MAIN
@@ -45,10 +45,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
         viewModel.myUsers.observe(viewLifecycleOwner) { list ->
             list.body()?.items?.let { adapter.setList(it) }
         }
-        /* viewModel.getAllUsers().observe(viewLifecycleOwner) { list ->
-             adapter.setList(list.asReversed() as ArrayList<Users>)
-             Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
-        */
     }
 
 
