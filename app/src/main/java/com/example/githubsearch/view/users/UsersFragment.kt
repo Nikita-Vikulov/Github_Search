@@ -45,7 +45,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
 
         })
         usersViewModel.myUsers.observe(viewLifecycleOwner) { list ->
-            list.body()?.items?.let { adapter.setList(it) } // сделать через difutils
+            list.body()?.items?.let { adapter.submitList(it) } // сделать через difutils
         }
     }
 

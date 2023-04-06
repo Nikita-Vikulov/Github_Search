@@ -43,7 +43,7 @@ class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.Histo
             }
         }
     }
-    fun setList(list: List<Users>) {
+    fun submitList(list: List<Users>) {
         listUsers = list
         notifyDataSetChanged()
     }

@@ -48,7 +48,7 @@ class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHo
         return listUsers.size
     }
 
-    fun setList(list: ArrayList<Users>) {
+    fun submitList(list: ArrayList<Users>) {
         listUsers = list
         notifyDataSetChanged()
     }

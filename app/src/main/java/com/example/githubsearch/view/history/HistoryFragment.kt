@@ -32,12 +32,11 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
     }
 
     private fun init() {
-        //val viewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         recyclerView = binding.recyclerViewHistory
         recyclerView.adapter = adapter
 
         usersViewModel.allUsers.observe(viewLifecycleOwner) { users ->
-            users.let { adapter.setList(it) }
+            users.let { adapter.submitList(it) }
         }
     }
 
