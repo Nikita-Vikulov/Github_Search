@@ -5,7 +5,8 @@
     android:layout_height="50dp"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/avatar_image_view"

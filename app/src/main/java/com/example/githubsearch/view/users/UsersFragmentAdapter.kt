@@ -10,7 +10,7 @@ import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
 
-class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(WORDS_COMPARATOR) {
+class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(USERS_COMPARATOR) {
 
     private var listUsers = emptyList<Users>()
 
@@ -36,9 +36,9 @@ class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHo
             with(binding) {
                 tvLogin.text = users.login
                 Glide.with(root.context)
-                    .load(users.avatar_url)
+                    .load(users.avatarUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.baseline_portrait_24)
                     .into(avatarImageView)
             }
         }
@@ -63,7 +63,7 @@ class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHo
         holder.itemView.setOnClickListener(null)
     }
     companion object {
-        private val WORDS_COMPARATOR = object : DiffUtil.ItemCallback<Users>() {
+        private val USERS_COMPARATOR = object : DiffUtil.ItemCallback<Users>() {
             override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
                 return oldItem === newItem
             }

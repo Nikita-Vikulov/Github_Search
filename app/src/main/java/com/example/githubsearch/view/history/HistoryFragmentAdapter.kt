@@ -36,7 +36,7 @@ class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.Histo
             with(binding) {
                 tvLogin.text = users.login
                 Glide.with(root.context)
-                    .load(users.avatar_url)
+                    .load(users.avatarUrl)
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(avatarImageView)

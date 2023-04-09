@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 
-class UsersViewModel(val repository: UsersRepository) : ViewModel() {
+class UsersViewModel(private val repository: UsersRepository) : ViewModel() {
     val allUsers: LiveData<List<Users>> = repository.allUsers.asLiveData()
     val myUsers: MutableLiveData<Response<UsersResponse>> = MutableLiveData()
     fun getUsers(queryUser: String) {
@@ -30,26 +30,3 @@ class ViewModelFactory(private val repository: UsersRepository) : ViewModelProvi
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-
-/*
-class UsersViewModel(application: Application) : AndroidViewModel(application) { // сделать в конструкторе репозиторий и инстанс БД
-
-    private val repository = RetrofitRepository()
-    val myUsers: MutableLiveData<Response<UsersResponse>> = MutableLiveData()
-    private val context = application
-
-    fun getUsers(queryUser: String) {
-        viewModelScope.launch {
-            myUsers.value = repository.getUsers(queryUser)
-        }
-    }
-
-    fun initDatabase(){ // на уровне application (пункт 8)
-        val daoUsers = UsersRoomDatabase.getInstance(context).getUsersDao()
-        REALIZATION = UsersRepositoryRealization(daoUsers)
-    }
-
-    fun getAllUsers(): LiveData<List<Users>> {
-        return REALIZATION.allUsers
-    }
-}*/

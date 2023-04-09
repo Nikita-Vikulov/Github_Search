@@ -11,14 +11,14 @@ import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentUsersBinding
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.view.UsersApplication
+import com.example.githubsearch.view.Application
 
 class UsersFragment : BaseFragment<FragmentUsersBinding>() {
     private lateinit var recyclerView: RecyclerView
     private val adapter by lazy { UsersFragmentAdapter() }
 
     private val usersViewModel: UsersViewModel by viewModels {
-        ViewModelFactory((requireActivity().application as UsersApplication).repository)
+        ViewModelFactory((requireActivity().application as Application).userRepository)
     }
 
     override fun getViewBinding(container: ViewGroup?): FragmentUsersBinding =
@@ -42,7 +42,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
                 usersViewModel.getUsers(newText.toString())
                 return false
             }
-
         })
         usersViewModel.myUsers.observe(viewLifecycleOwner) { list ->
             list.body()?.items?.let { adapter.submitList(it) } // сделать через difutils
@@ -55,6 +54,7 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>() {
             val bundle = Bundle()
             bundle.putSerializable("user", model)
             MAIN.navController.navigate(R.id.action_usersFragment_to_detailsFragment, bundle)
+
         }
     }
 }

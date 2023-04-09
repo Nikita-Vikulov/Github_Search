@@ -10,7 +10,7 @@ import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentHistoryBinding
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.view.UsersApplication
+import com.example.githubsearch.view.Application
 import com.example.githubsearch.view.users.UsersViewModel
 import com.example.githubsearch.view.users.ViewModelFactory
 
@@ -19,7 +19,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
     private lateinit var recyclerView: RecyclerView
     private val adapter by lazy { HistoryFragmentAdapter() }
     private val usersViewModel: UsersViewModel by viewModels {
-        ViewModelFactory((requireActivity().application as UsersApplication).repository)
+        ViewModelFactory((requireActivity().application as Application).userRepository)
     }
 
     override fun getViewBinding(container: ViewGroup?): FragmentHistoryBinding =

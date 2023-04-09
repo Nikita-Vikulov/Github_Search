@@ -4,7 +4,7 @@ package com.example.githubsearch.model.repository
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.model.UsersResponse
 import com.example.githubsearch.model.repository.api.RetrofitInstance
-import com.example.githubsearch.model.repository.room.users.UsersDao
+import com.example.githubsearch.model.repository.room.UsersDao
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
