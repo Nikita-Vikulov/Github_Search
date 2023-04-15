@@ -1,7 +1,6 @@
 package com.example.githubsearch.model.repository.room
 
 import androidx.room.*
-
 import com.example.githubsearch.model.Users
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +14,9 @@ interface UsersDao {
     @Delete
     suspend fun delete(users: Users)
 
-    @Query("SELECT * from users_table")
+    @Query("SELECT * FROM users_table")
     fun getAllUsers(): Flow<List<Users>>
+
+    @Query("SELECT * FROM users_table WHERE login = :login")
+    suspend fun getUsersByLogin(login: String): List<Users>
 }

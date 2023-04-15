@@ -2,22 +2,20 @@ package com.example.githubsearch.view.users
 
 import androidx.lifecycle.*
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.model.UsersResponse
 import com.example.githubsearch.model.repository.UsersRepository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 
 class UsersViewModel(private val repository: UsersRepository) : ViewModel() {
     val allUsers: LiveData<List<Users>> = repository.allUsers.asLiveData()
-    val myUsers: MutableLiveData<Response<UsersResponse>> = MutableLiveData()
-    fun getUsers(queryUser: String) {
+    private val _myUsers = MutableLiveData<List<Users>>()
+    val myUsers: LiveData<List<Users>> = _myUsers
+
+    fun getUsersByLogin(queryUser: String) {
         viewModelScope.launch {
-            myUsers.value = repository.getUsers(queryUser)
+            val users = repository.getUsersByLogin(queryUser)
+            _myUsers.postValue(users)
         }
-    }
-    fun insert(users: Users) = viewModelScope.launch {
-        repository.insertUser(users)
     }
 }
 

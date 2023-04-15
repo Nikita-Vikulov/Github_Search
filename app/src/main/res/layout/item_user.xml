@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    tools:ignore="UseCompoundDrawables">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
-    <ImageView
-        android:id="@+id/avatar_image_view"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="4dp"
-        tools:src="@color/colorAccent" />
-
-    <TextView
-        android:id="@+id/tv_login"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        tools:text="User name" />
+        android:padding="4dp">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/avatar_image_view"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="4dp"
+            tools:src="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/avatar_image_view"
+            android:layout_alignBottom="@+id/avatar_image_view"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@+id/avatar_image_view"
+            android:text="User name"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

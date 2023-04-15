@@ -7,9 +7,10 @@ import com.bumptech.glide.Glide
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
+import com.example.githubsearch.view.IUserClickListener
 
 
-class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.HistoryViewHolder>() {
+class HistoryFragmentAdapter(private val listener: IUserClickListener) : RecyclerView.Adapter<HistoryFragmentAdapter.HistoryViewHolder>() {
 
     private var listUsers = emptyList<Users>()
 
@@ -54,7 +55,7 @@ class HistoryFragmentAdapter : RecyclerView.Adapter<HistoryFragmentAdapter.Histo
 
     override fun onViewAttachedToWindow(holder: HistoryViewHolder) {
         holder.itemView.setOnClickListener {
-            HistoryFragment.clickUser(listUsers[holder.bindingAdapterPosition])
+            listener.onItemClick(listUsers[holder.bindingAdapterPosition])
         }
     }
 

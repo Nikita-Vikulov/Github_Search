@@ -1,24 +1,22 @@
 package com.example.githubsearch.model.repository.room
 
 import androidx.room.*
-import com.example.githubsearch.model.ReposResponse
-import kotlinx.coroutines.flow.Flow
+import com.example.githubsearch.model.Repository
 
 @Dao
 interface ReposDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(repos: ReposResponse)
+    suspend fun insert(repos: Repository)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(reposList: List<ReposResponse>)
+    suspend fun insertAll(
+        reposList: List<Repository>
+    )
 
     @Delete
-    suspend fun delete(repos: ReposResponse)
+    suspend fun delete(repos: Repository)
 
-    @Query("SELECT * from repos_table")
-    fun getAllRepos(): Flow<List<ReposResponse>>
-
-    // @Query("SELECT * FROM RoomGithubRepository WHERE userId = :userId")
-   // fun getReposByUserId(userId: String): List<RoomGithubRepository>
+    @Query("SELECT * FROM repos_table WHERE login = :login")
+    suspend fun getReposByLogin(login: String): List<Repository>
 }

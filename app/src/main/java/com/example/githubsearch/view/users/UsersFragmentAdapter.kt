@@ -9,8 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
+import com.example.githubsearch.view.IUserClickListener
 
-class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(USERS_COMPARATOR) {
+class UsersFragmentAdapter(private val listener: IUserClickListener) :
+    ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(USERS_COMPARATOR) {
 
     private var listUsers = emptyList<Users>()
 
@@ -48,20 +50,22 @@ class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHo
         return listUsers.size
     }
 
-    fun submitList(list: ArrayList<Users>) {
+    fun setList(list: List<Users>) {
         listUsers = list
         notifyDataSetChanged()
     }
 
     override fun onViewAttachedToWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener {
-            UsersFragment.clickUser(listUsers[holder.bindingAdapterPosition])
+            listener.onItemClick(listUsers[holder.bindingAdapterPosition])
         }
     }
 
+    //Build Config
     override fun onViewDetachedFromWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener(null)
     }
+
     companion object {
         private val USERS_COMPARATOR = object : DiffUtil.ItemCallback<Users>() {
             override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
@@ -74,3 +78,4 @@ class UsersFragmentAdapter : ListAdapter<Users, UsersFragmentAdapter.UsersViewHo
         }
     }
 }
+

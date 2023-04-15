@@ -7,4 +7,6 @@ interface INetworkStatus {
     fun isOnline(): Observable<Boolean>
 
     fun isOnlineSingle(): Single<Boolean>
+
+    fun isNetworkAvailableNow() : Boolean
 }

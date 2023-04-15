@@ -1,23 +1,26 @@
 package com.example.githubsearch.view.history
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.BaseFragment
-import com.example.githubsearch.MAIN
-import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentHistoryBinding
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.view.Application
+import com.example.githubsearch.view.INavigation
+import com.example.githubsearch.view.IUserClickListener
 import com.example.githubsearch.view.users.UsersViewModel
 import com.example.githubsearch.view.users.ViewModelFactory
 
-class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
+class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListener {
 
     private lateinit var recyclerView: RecyclerView
-    private val adapter by lazy { HistoryFragmentAdapter() }
+    lateinit var listener: INavigation
+    private val adapter by lazy { HistoryFragmentAdapter(this) }
+
     private val usersViewModel: UsersViewModel by viewModels {
         ViewModelFactory((requireActivity().application as Application).userRepository)
     }
@@ -27,7 +30,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(false)
         init()
     }
 
@@ -40,11 +42,14 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>() {
         }
     }
 
-    companion object {
-        fun clickUser(model: Users) {
-            val bundle = Bundle()
-            bundle.putSerializable("user", model)
-            MAIN.navController.navigate(R.id.action_historyFragment_to_detailsFragment, bundle)
+    override fun onAttach(context: Context) { //найти способ без onAttach
+        super.onAttach(context)
+        if (context is INavigation) {
+            listener = context
         }
+    }
+
+    override fun onItemClick(user: Users) {
+        listener.openDetailsFragmentFromHistory(user)
     }
 }

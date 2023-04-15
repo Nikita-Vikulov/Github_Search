@@ -1,6 +1,6 @@
 package com.example.githubsearch.model.repository.api
 
-import com.example.githubsearch.model.ReposResponse
+import com.example.githubsearch.model.Repository
 import com.example.githubsearch.model.UsersResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,8 +13,9 @@ interface ApiService {
         @Query("q") query: String
     ): Response<UsersResponse>
 
-    @GET("/search/users/{login}/repos")
-    suspend fun getRepos(
+    @GET("/users/{login}/repos")
+    suspend fun getReposOnline(
         @Path("login") login: String,
-    ): Response<List<ReposResponse>>
+    ): Response<List<Repository>>
 }
+

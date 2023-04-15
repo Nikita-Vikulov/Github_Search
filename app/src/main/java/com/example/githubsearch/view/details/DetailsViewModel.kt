@@ -1,29 +1,38 @@
 package com.example.githubsearch.view.details
 
 import androidx.lifecycle.*
-import com.example.githubsearch.model.ReposResponse
+import com.example.githubsearch.model.Repository
+import com.example.githubsearch.model.Users
 import com.example.githubsearch.model.repository.ReposRepository
+import com.example.githubsearch.model.repository.UsersRepository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
-class DetailsViewModel(private val repository: ReposRepository) : ViewModel() {
+class DetailsViewModel(
+    private val userRepository: UsersRepository,
+    private val repoRepository: ReposRepository
+) : ViewModel() {
 
-    val myRepos: MutableLiveData<Response<List<ReposResponse>>> = MutableLiveData()
+    val myRepos: MutableLiveData<List<Repository>> = MutableLiveData()
+
     fun getRepos(login: String) {
         viewModelScope.launch {
-            myRepos.value = repository.getReposByLogin(login)
+            myRepos.value = repoRepository.getReposByLogin(login)
         }
     }
-    fun insert(repos: ReposResponse) = viewModelScope.launch {
-        repository.insertRepos(repos)
+
+    fun insert(user: Users) = viewModelScope.launch {
+        userRepository.insertUser(user)
     }
 }
 
-class ViewModelFactory(private val repository: ReposRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(
+    private val userRepository: UsersRepository,
+    private val repoRepository: ReposRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return DetailsViewModel(repository) as T
+            return DetailsViewModel(userRepository, repoRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

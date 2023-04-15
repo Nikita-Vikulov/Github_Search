@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_repositoryFragment"
+            app:destination="@id/repositoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/usersFragment"
@@ -36,4 +39,8 @@
             android:id="@+id/action_historyFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/repositoryFragment"
+        android:name="com.example.githubsearch.view.repository.RepositoryFragment"
+        android:label="RepositoryFragment" />
 </navigation>
