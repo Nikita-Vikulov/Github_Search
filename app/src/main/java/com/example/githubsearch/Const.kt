@@ -1,6 +1,15 @@
 package com.example.githubsearch
 
 
-const val BASE_URL = "https://api.github.com" // вынести в BuildConfig
+const val USER = "user"
+const val REPOSITORY = "repository"
 
-//livedata примеры кода в MVVM, связка от livedata с корутинами!
+
+//timer с задержками для поиска
+//сделать отслеживание нажатии
+// сделать изъятие из 2х таблиц по первичному ключу?
+// добавить стили для разметки, вынести размеры
+// snackBar для подключения к интернету
+//навигация в модуль? Отдельный модуль для BaseViewModel
+// Storage Module - хранение БД
+// flow - посмотреть

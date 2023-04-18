@@ -17,6 +17,6 @@ interface UsersDao {
     @Query("SELECT * FROM users_table")
     fun getAllUsers(): Flow<List<Users>>
 
-    @Query("SELECT * FROM users_table WHERE login = :login")
+    @Query("SELECT * FROM users_table WHERE login LIKE :login")
     suspend fun getUsersByLogin(login: String): List<Users>
 }

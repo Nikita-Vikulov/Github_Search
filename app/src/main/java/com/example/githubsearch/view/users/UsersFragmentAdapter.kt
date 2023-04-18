@@ -61,7 +61,6 @@ class UsersFragmentAdapter(private val listener: IUserClickListener) :
         }
     }
 
-    //Build Config
     override fun onViewDetachedFromWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener(null)
     }
