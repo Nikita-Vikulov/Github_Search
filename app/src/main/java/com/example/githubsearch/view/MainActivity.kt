@@ -1,8 +1,6 @@
 package com.example.githubsearch.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -23,7 +21,7 @@ class MainActivity : AppCompatActivity(), INavigation {
         navController = Navigation.findNavController(this, R.id.nav_host)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+   /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
 
         return true
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity(), INavigation {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
+    }*/
 
     override fun openHistoryFragment() {
         navController.navigate(R.id.action_usersFragment_to_historyFragment)
@@ -61,7 +59,6 @@ class MainActivity : AppCompatActivity(), INavigation {
         bundle.putParcelable("user", users)
         navController.navigate(R.id.action_usersFragment_to_detailsFragment, bundle)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

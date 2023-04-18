@@ -21,15 +21,25 @@ class UsersRepository(
     }
 
     suspend fun getUsersByLogin(queryUser: String): List<Users> {
+        val searchQuery = "%$queryUser%"
         if (networkStatus.isNetworkAvailableNow()) {
-            val response = RetrofitInstance.api.getSearchUsers(queryUser)
-            return convertResponseToUsersList(response)
+            try {
+                val response = RetrofitInstance.api.getSearchUsers(queryUser)
+                return convertResponseToUsersList(response)
+            } catch (e: Exception) {
+                return usersDao.getUsersByLogin(searchQuery)
+            }
         } else {
-            return usersDao.getUsersByLogin(queryUser)
+            return usersDao.getUsersByLogin(searchQuery)
         }
     }
 
     private fun convertResponseToUsersList(response: Response<UsersResponse>): List<Users> {
-        return response.body()?.items ?: emptyList()
+        val items = response.body()?.items
+        return if (items != null && items.isNotEmpty()) {
+            items
+        } else {
+            emptyList()
+        }
     }
 }

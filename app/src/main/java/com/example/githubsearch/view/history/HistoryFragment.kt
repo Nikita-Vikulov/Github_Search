@@ -1,19 +1,18 @@
 package com.example.githubsearch.view.history
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.BaseFragment
+import com.example.githubsearch.MainViewModel
+import com.example.githubsearch.ViewModelFactory
 import com.example.githubsearch.databinding.FragmentHistoryBinding
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.view.Application
 import com.example.githubsearch.view.INavigation
 import com.example.githubsearch.view.IUserClickListener
-import com.example.githubsearch.view.users.UsersViewModel
-import com.example.githubsearch.view.users.ViewModelFactory
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListener {
 
@@ -21,8 +20,11 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListen
     lateinit var listener: INavigation
     private val adapter by lazy { HistoryFragmentAdapter(this) }
 
-    private val usersViewModel: UsersViewModel by viewModels {
-        ViewModelFactory((requireActivity().application as Application).userRepository)
+    private val mainViewModel: MainViewModel by viewModels {
+       ViewModelFactory(
+            (requireActivity().application as Application).userRepository,
+            (requireActivity().application as Application).repoRepository
+        )
     }
 
     override fun getViewBinding(container: ViewGroup?): FragmentHistoryBinding =
@@ -30,6 +32,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listener = (requireActivity() as? INavigation)!!
         init()
     }
 
@@ -37,17 +40,17 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListen
         recyclerView = binding.recyclerViewHistory
         recyclerView.adapter = adapter
 
-        usersViewModel.allUsers.observe(viewLifecycleOwner) { users ->
+        mainViewModel.allUsers.observe(viewLifecycleOwner) { users ->
             users.let { adapter.submitList(it) }
         }
     }
 
-    override fun onAttach(context: Context) { //найти способ без onAttach
+   /* override fun onAttach(context: Context) { //найти способ без onAttach
         super.onAttach(context)
         if (context is INavigation) {
             listener = context
         }
-    }
+    }*/
 
     override fun onItemClick(user: Users) {
         listener.openDetailsFragmentFromHistory(user)

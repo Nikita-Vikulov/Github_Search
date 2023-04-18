@@ -1,12 +1,7 @@
 package com.example.githubsearch.view.users
 
-import androidx.lifecycle.*
-import com.example.githubsearch.model.Users
-import com.example.githubsearch.model.repository.UsersRepository
-import kotlinx.coroutines.launch
 
-
-class UsersViewModel(private val repository: UsersRepository) : ViewModel() {
+/*class UsersViewModel(private val repository: UsersRepository) : ViewModel() {
     val allUsers: LiveData<List<Users>> = repository.allUsers.asLiveData()
     private val _myUsers = MutableLiveData<List<Users>>()
     val myUsers: LiveData<List<Users>> = _myUsers
@@ -27,4 +22,4 @@ class ViewModelFactory(private val repository: UsersRepository) : ViewModelProvi
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
+}*/
