@@ -9,10 +9,10 @@
         android:id="@+id/repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textStyle="bold"
-        android:text="Repository:"
-        android:textSize="18sp"
+        style="@style/BoldTextStyle"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="@string/repository"
+        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toStartOf="@+id/avatar_image_view"
         app:layout_constraintTop_toBottomOf="@+id/avatar_image_view"
         tools:ignore="MissingConstraints" />
@@ -21,17 +21,17 @@
         android:id="@+id/recycler_view_repos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/large_margin"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/repository"
         tools:listitem="@layout/item_repo" />
 
     <ImageView
         android:id="@+id/avatar_image_view"
-        android:layout_width="88dp"
-        android:layout_height="87dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="@dimen/large_avatar"
+        android:layout_height="@dimen/large_avatar"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -40,10 +40,10 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textStyle="bold"
-        android:text="Name:"
-        android:textSize="18sp"
+        style="@style/BoldTextStyle"
+        android:layout_marginStart="@dimen/large_margin"
+        android:text="@string/name"
+        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toEndOf="@+id/avatar_image_view"
         app:layout_constraintTop_toTopOf="@+id/avatar_image_view" />
 
@@ -51,9 +51,9 @@
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="User name"
-        android:textSize="18sp"
+        android:layout_marginStart="@dimen/small_margin"
+        android:text="@string/user_name"
+        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toEndOf="@+id/login"
         app:layout_constraintTop_toTopOf="@+id/login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

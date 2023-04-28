@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CardStyle"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp">
+        android:padding="@dimen/tiny_margin">
 
         <ImageView
             android:id="@+id/avatar_image_view"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="4dp"
+            android:layout_width="@dimen/medium_avatar"
+            android:layout_height="@dimen/medium_avatar"
+            android:layout_marginStart="@dimen/tiny_margin"
             tools:src="@color/colorAccent" />
 
         <TextView
@@ -27,12 +24,12 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/avatar_image_view"
             android:layout_alignBottom="@+id/avatar_image_view"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
             android:layout_toEndOf="@+id/avatar_image_view"
-            android:text="User name"
-            android:textSize="18sp" />
+            android:text="@string/user_name"
+            android:textSize="@dimen/large_text" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

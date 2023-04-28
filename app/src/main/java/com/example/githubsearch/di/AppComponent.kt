@@ -3,6 +3,10 @@ package com.example.githubsearch.di
 
 import android.app.Application
 import com.example.githubsearch.App
+import com.example.githubsearch.di.modules.ApiModule
+import com.example.githubsearch.di.modules.AppModule
+import com.example.githubsearch.di.modules.DatabaseModule
+import com.example.githubsearch.di.modules.ViewModelsModule
 import com.example.githubsearch.model.repository.ReposRepository
 import com.example.githubsearch.model.repository.UsersRepository
 import com.example.githubsearch.view.details.DetailsFragment
@@ -18,10 +22,10 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         ApiModule::class,
-        ViewModelsModule::class
+        ViewModelsModule::class,
+        DatabaseModule::class
     ]
 )
-
 interface AppComponent : AndroidInjector<App> {
     @Component.Builder
     interface Builder {
@@ -42,5 +46,4 @@ interface AppComponent : AndroidInjector<App> {
 
     fun userRepository(): UsersRepository
     fun repoRepository(): ReposRepository
-
 }

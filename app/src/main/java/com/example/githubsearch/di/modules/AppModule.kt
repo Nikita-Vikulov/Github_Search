@@ -1,4 +1,4 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import android.content.Context
 import com.example.githubsearch.App
@@ -18,11 +18,6 @@ class AppModule(private val application: App) {
 
     @Provides
     fun provideContext(): Context = application
-
-    @Provides
-    fun provideGithubDatabase(): GithubDatabase {
-        return GithubDatabase.getDatabase(application)
-    }
 
     @Provides
     fun provideUsersRepository(
@@ -47,14 +42,6 @@ class AppModule(private val application: App) {
     fun provideRepositoryMapper(): RepositoryMapper {
         return RepositoryMapper()
     }
-
-   /* @Provides
-    fun provideMainViewModel(
-        userRepository: UsersRepository,
-        repoRepository: ReposRepository
-    ): MainViewModel {
-        return MainViewModel(userRepository, repoRepository)
-    }*/
 
     @Provides
     fun provideNetworkStatus(): INetworkStatus {

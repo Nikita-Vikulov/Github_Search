@@ -7,24 +7,24 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.App
 import com.example.githubsearch.BaseFragment
-import com.example.githubsearch.ViewModelFactory
 import com.example.githubsearch.databinding.FragmentHistoryBinding
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.view.INavigation
 import com.example.githubsearch.view.IUserClickListener
+import com.example.githubsearch.view.ViewModelFactory
 import javax.inject.Inject
 
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListener {
-
-    private lateinit var recyclerView: RecyclerView
-    lateinit var listener: INavigation
-    private val adapter by lazy { HistoryFragmentAdapter(this) }
 
     @Inject
     lateinit var viewModeFactory: ViewModelFactory
     private val historyViewModel: HistoryViewModel by lazy {
         ViewModelProvider(this, viewModeFactory)[HistoryViewModel::class.java]
     }
+
+    private lateinit var recyclerView: RecyclerView
+    lateinit var listener: INavigation
+    private val adapter by lazy { HistoryFragmentAdapter(this) }
 
     override fun getViewBinding(container: ViewGroup?): FragmentHistoryBinding =
         FragmentHistoryBinding.inflate(layoutInflater, container, false)

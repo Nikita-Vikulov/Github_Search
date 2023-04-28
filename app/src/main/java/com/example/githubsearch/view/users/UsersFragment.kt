@@ -11,24 +11,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.App
 import com.example.githubsearch.BaseFragment
 import com.example.githubsearch.R
-import com.example.githubsearch.ViewModelFactory
 import com.example.githubsearch.databinding.FragmentUsersBinding
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.view.INavigation
 import com.example.githubsearch.view.IUserClickListener
+import com.example.githubsearch.view.ViewModelFactory
 import javax.inject.Inject
 
 class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var listener: INavigation
-    private val adapter by lazy { UsersFragmentAdapter(this) }
 
     @Inject
     lateinit var viewModeFactory: ViewModelFactory
     val usersViewModel: UsersViewModel by lazy {
         ViewModelProvider(this, viewModeFactory)[UsersViewModel::class.java]
     }
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var listener: INavigation
+    private val adapter by lazy { UsersFragmentAdapter(this) }
 
     override fun getViewBinding(container: ViewGroup?): FragmentUsersBinding =
         FragmentUsersBinding.inflate(layoutInflater, container, false)
@@ -51,7 +51,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                usersViewModel.getUsersByLogin(newText.toString())
                 return true
             }
         })

@@ -14,21 +14,22 @@ import com.example.githubsearch.model.Repository
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.view.INavigation
 import com.example.githubsearch.view.IRepositoryClickListener
+import com.example.githubsearch.view.ViewModelFactory
 import javax.inject.Inject
 
 
 class DetailsFragment : BaseFragment<FragmentDetailsBinding>(), IRepositoryClickListener {
-
-    private lateinit var currentUser: Users
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var listener: INavigation
-    private val adapter by lazy { DetailsFragmentAdapter(this) }
 
     @Inject
     lateinit var viewModeFactory: ViewModelFactory
     private val detailsViewModel: DetailsViewModel by lazy {
         ViewModelProvider(this, viewModeFactory)[DetailsViewModel::class.java]
     }
+
+    private lateinit var currentUser: Users
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var listener: INavigation
+    private val adapter by lazy { DetailsFragmentAdapter(this) }
 
     override fun getViewBinding(container: ViewGroup?): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater, container, false)
@@ -51,7 +52,7 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(), IRepositoryClick
             Glide.with(root.context)
                 .load(currentUser.avatarUrl)
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.baseline_portrait_24)
                 .into(avatarImageView)
         }
         detailsViewModel.getReposByLogin(currentUser.login)

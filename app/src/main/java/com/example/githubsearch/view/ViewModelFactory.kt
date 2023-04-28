@@ -1,4 +1,4 @@
-package com.example.githubsearch
+package com.example.githubsearch.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

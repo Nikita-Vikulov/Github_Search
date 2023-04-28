@@ -1,8 +1,8 @@
-package com.example.githubsearch.di
+package com.example.githubsearch.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubsearch.ViewModelFactory
+import com.example.githubsearch.view.ViewModelFactory
 import com.example.githubsearch.view.details.DetailsViewModel
 import com.example.githubsearch.view.history.HistoryViewModel
 import com.example.githubsearch.view.users.UsersViewModel
@@ -17,10 +17,6 @@ abstract class ViewModelsModule {
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
-
-
-    /*@Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory*/
 
     @Binds
     @IntoMap

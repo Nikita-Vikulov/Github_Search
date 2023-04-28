@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CardStyle"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="@dimen/small_margin">
 
         <TextView
             android:id="@+id/tv_repo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Repository name"
-            android:textSize="16sp" />
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/repository_name"
+            android:textSize="@dimen/medium_text" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

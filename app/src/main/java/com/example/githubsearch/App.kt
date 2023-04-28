@@ -2,14 +2,13 @@ package com.example.githubsearch
 
 import android.app.Application
 import com.example.githubsearch.di.AppComponent
-import com.example.githubsearch.di.AppModule
 import com.example.githubsearch.di.DaggerAppComponent
+import com.example.githubsearch.di.modules.AppModule
 import com.example.githubsearch.model.repository.ReposRepository
 import com.example.githubsearch.model.repository.RepositoryMapper
 import com.example.githubsearch.model.repository.UsersRepository
 import com.example.githubsearch.model.repository.room.GithubDatabase
 import javax.inject.Inject
-
 
 
 class App : Application() {
