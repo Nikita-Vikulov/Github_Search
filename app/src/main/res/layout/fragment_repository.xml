@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/repository_name"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/large_margin"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/full_name"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_margin"
@@ -51,7 +51,7 @@
 
     <TextView
         android:id="@+id/language"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_margin"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/forks"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_margin"
@@ -79,7 +79,7 @@
 
     <TextView
         android:id="@+id/description"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/large_margin"
@@ -91,9 +91,9 @@
         android:id="@+id/tv_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
         android:ellipsize="end"
         android:maxLines="100"
         app:layout_constraintTop_toBottomOf="@+id/description" />

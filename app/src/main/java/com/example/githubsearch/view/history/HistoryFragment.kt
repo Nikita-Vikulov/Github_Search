@@ -1,5 +1,6 @@
 package com.example.githubsearch.view.history
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +24,15 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListen
     }
 
     private lateinit var recyclerView: RecyclerView
-    lateinit var listener: INavigation
+    private lateinit var listener: INavigation
     private val adapter by lazy { HistoryFragmentAdapter(this) }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is INavigation) {
+            listener = context
+        }
+    }
 
     override fun getViewBinding(container: ViewGroup?): FragmentHistoryBinding =
         FragmentHistoryBinding.inflate(layoutInflater, container, false)
@@ -32,7 +40,6 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(), IUserClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as App).appComponent.inject(this)
-        listener = (requireActivity() as? INavigation)!!
         init()
     }
 

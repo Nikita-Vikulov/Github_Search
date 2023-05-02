@@ -1,8 +1,8 @@
-package com.example.githubsearch.model.repository
+package com.example.githubsearch.repository
 
+import com.example.githubsearch.api.ApiService
 import com.example.githubsearch.model.Repository
-import com.example.githubsearch.model.repository.api.ApiService
-import com.example.githubsearch.model.repository.room.ReposDao
+import com.example.githubsearch.room.ReposDao
 import com.example.githubsearch.view.utils.INetworkStatus
 
 

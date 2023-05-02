@@ -11,14 +11,8 @@ import com.example.githubsearch.USER
 import com.example.githubsearch.databinding.ActivityMainBinding
 import com.example.githubsearch.model.Repository
 import com.example.githubsearch.model.Users
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), INavigation {
-    @Inject
-    lateinit var navigation: INavigation
-
-    private lateinit var userClickListener: IUserClickListener
-    private lateinit var repositoryClickListener: IRepositoryClickListener
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!

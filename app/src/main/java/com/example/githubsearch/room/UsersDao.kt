@@ -1,4 +1,4 @@
-package com.example.githubsearch.model.repository.room
+package com.example.githubsearch.room
 
 import androidx.room.*
 import com.example.githubsearch.model.Users

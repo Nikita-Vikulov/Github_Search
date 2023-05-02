@@ -5,7 +5,5 @@
     <dimen name="small_margin">10dp</dimen>
     <dimen name="tiny_margin">4dp</dimen>
     <dimen name="large_avatar">88dp</dimen>
-    <dimen name="large_text">18sp</dimen>
     <dimen name="medium_avatar">46dp</dimen>
-    <dimen name="medium_text">16sp</dimen>
 </resources>

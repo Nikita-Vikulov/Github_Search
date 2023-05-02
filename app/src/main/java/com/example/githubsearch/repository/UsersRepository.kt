@@ -1,10 +1,10 @@
-package com.example.githubsearch.model.repository
+package com.example.githubsearch.repository
 
 
+import com.example.githubsearch.api.ApiService
 import com.example.githubsearch.model.Users
 import com.example.githubsearch.model.UsersResponse
-import com.example.githubsearch.model.repository.api.ApiService
-import com.example.githubsearch.model.repository.room.UsersDao
+import com.example.githubsearch.room.UsersDao
 import com.example.githubsearch.view.utils.INetworkStatus
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response

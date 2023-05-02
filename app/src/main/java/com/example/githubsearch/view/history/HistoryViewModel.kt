@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.model.repository.UsersRepository
+import com.example.githubsearch.repository.UsersRepository
 import javax.inject.Inject
 
 class HistoryViewModel @Inject constructor(

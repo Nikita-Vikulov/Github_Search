@@ -1,5 +1,6 @@
 package com.example.githubsearch.view.details
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -31,6 +32,13 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(), IRepositoryClick
     private lateinit var listener: INavigation
     private val adapter by lazy { DetailsFragmentAdapter(this) }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is INavigation) {
+            listener = context
+        }
+    }
+
     override fun getViewBinding(container: ViewGroup?): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater, container, false)
 
@@ -42,7 +50,6 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(), IRepositoryClick
         currentUser = arguments?.getParcelable<Users>(USER)
             ?: throw IllegalStateException("User argument is missing")
         init()
-        listener = (requireActivity() as? INavigation)!!
     }
 
     private fun init() {

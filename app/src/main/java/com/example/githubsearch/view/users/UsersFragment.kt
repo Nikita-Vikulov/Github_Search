@@ -1,5 +1,6 @@
 package com.example.githubsearch.view.users
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -18,7 +19,8 @@ import com.example.githubsearch.view.IUserClickListener
 import com.example.githubsearch.view.ViewModelFactory
 import javax.inject.Inject
 
-class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
+class UsersFragment :
+    BaseFragment<FragmentUsersBinding>(), IUserClickListener {
 
     @Inject
     lateinit var viewModeFactory: ViewModelFactory
@@ -27,8 +29,15 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
     }
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var listener: INavigation
     private val adapter by lazy { UsersFragmentAdapter(this) }
+    private lateinit var listener: INavigation
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is INavigation) {
+            listener = context
+        }
+    }
 
     override fun getViewBinding(container: ViewGroup?): FragmentUsersBinding =
         FragmentUsersBinding.inflate(layoutInflater, container, false)
@@ -38,7 +47,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
         (requireActivity().application as App).appComponent.inject(this)
         setupMenu()
         init()
-        listener = (requireActivity() as? INavigation)!!
     }
 
     private fun init() {

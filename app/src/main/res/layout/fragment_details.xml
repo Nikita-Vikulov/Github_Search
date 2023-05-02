@@ -9,10 +9,9 @@
         android:id="@+id/repository"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.LargeText"
         android:layout_marginTop="@dimen/large_margin"
         android:text="@string/repository"
-        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toStartOf="@+id/avatar_image_view"
         app:layout_constraintTop_toBottomOf="@+id/avatar_image_view"
         tools:ignore="MissingConstraints" />
@@ -40,20 +39,19 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/BoldTextStyle"
+        style="@style/BoldTextStyle.LargeText"
         android:layout_marginStart="@dimen/large_margin"
         android:text="@string/name"
-        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toEndOf="@+id/avatar_image_view"
         app:layout_constraintTop_toTopOf="@+id/avatar_image_view" />
 
     <TextView
         android:id="@+id/tv_login"
+        style="@style/RegularTextStyle.LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
         android:text="@string/user_name"
-        android:textSize="@dimen/large_text"
         app:layout_constraintStart_toEndOf="@+id/login"
         app:layout_constraintTop_toTopOf="@+id/login" />
 </androidx.constraintlayout.widget.ConstraintLayout>

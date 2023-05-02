@@ -1,4 +1,4 @@
-package com.example.githubsearch.model.repository.api
+package com.example.githubsearch.api
 
 import com.example.githubsearch.model.Repository
 import com.example.githubsearch.model.UsersResponse

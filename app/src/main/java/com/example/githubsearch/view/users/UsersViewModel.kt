@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.model.repository.UsersRepository
+import com.example.githubsearch.repository.UsersRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

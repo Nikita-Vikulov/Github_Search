@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.model.Repository
 import com.example.githubsearch.model.Users
-import com.example.githubsearch.model.repository.ReposRepository
-import com.example.githubsearch.model.repository.UsersRepository
+import com.example.githubsearch.repository.ReposRepository
+import com.example.githubsearch.repository.UsersRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

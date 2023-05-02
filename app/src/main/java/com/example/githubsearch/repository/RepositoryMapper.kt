@@ -1,4 +1,4 @@
-package com.example.githubsearch.model.repository
+package com.example.githubsearch.repository
 
 import com.example.githubsearch.model.Repository
 

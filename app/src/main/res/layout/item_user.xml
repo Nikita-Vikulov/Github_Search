@@ -20,6 +20,7 @@
 
         <TextView
             android:id="@+id/tv_login"
+            style="@style/RegularTextStyle.LargeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/avatar_image_view"
@@ -28,8 +29,7 @@
             android:layout_marginTop="@dimen/medium_margin"
             android:layout_marginBottom="@dimen/medium_margin"
             android:layout_toEndOf="@+id/avatar_image_view"
-            android:text="@string/user_name"
-            android:textSize="@dimen/large_text" />
+            android:text="@string/user_name" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

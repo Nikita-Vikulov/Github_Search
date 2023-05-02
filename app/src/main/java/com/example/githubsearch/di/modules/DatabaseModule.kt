@@ -2,9 +2,10 @@ package com.example.githubsearch.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.githubsearch.model.repository.room.GithubDatabase
-import com.example.githubsearch.model.repository.room.ReposDao
-import com.example.githubsearch.model.repository.room.UsersDao
+import com.example.githubsearch.DATA_BASE
+import com.example.githubsearch.room.GithubDatabase
+import com.example.githubsearch.room.ReposDao
+import com.example.githubsearch.room.UsersDao
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +17,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context.applicationContext,
             GithubDatabase::class.java,
-            "db"
+            DATA_BASE
         ).build()
     }
 
