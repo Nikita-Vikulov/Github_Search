@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="CardStyle" parent="CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <style name="BoldTextStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BoldTextStyle.LargeText" parent="BoldTextStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BoldTextStyle.MediumText" parent="BoldTextStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="RegularTextStyle">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="RegularTextStyle.LargeText" parent="RegularTextStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="RegularTextStyle.MediumText" parent="RegularTextStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

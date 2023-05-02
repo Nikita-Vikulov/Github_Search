@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CardStyle"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/avatar_image_view"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        tools:src="@color/colorAccent" />
-
-    <TextView
-        android:id="@+id/tv_login"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        tools:text="Имя пользователя" />
+        android:padding="@dimen/tiny_margin">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/avatar_image_view"
+            android:layout_width="@dimen/medium_avatar"
+            android:layout_height="@dimen/medium_avatar"
+            android:layout_marginStart="@dimen/tiny_margin"
+            tools:src="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            style="@style/RegularTextStyle.LargeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/avatar_image_view"
+            android:layout_alignBottom="@+id/avatar_image_view"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:layout_toEndOf="@+id/avatar_image_view"
+            android:text="@string/user_name" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

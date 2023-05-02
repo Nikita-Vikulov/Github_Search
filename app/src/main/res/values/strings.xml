@@ -2,4 +2,13 @@
     <string name="app_name">Github Search</string>
     <string name="reload">Перезагрузка</string>
     <string name="error">Ошибка</string>
+    <string name="repository">Repository:</string>
+    <string name="name">Name:</string>
+    <string name="user_name">User name</string>
+    <string name="repository_name">Repository name:</string>
+    <string name="full_name">Full name:</string>
+    <string name="language">Language:</string>
+    <string name="forks_count">Forks count:</string>
+    <string name="description">Description:</string>
+    <string name="enter_user_name">Enter user name</string>
 </resources>

@@ -2,15 +2,17 @@ package com.example.githubsearch.view.users
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubsearch.BASE_URL
-import com.example.githubsearch.MAIN
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
 import com.example.githubsearch.model.Users
+import com.example.githubsearch.view.IUserClickListener
 
-class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersViewHolder>() {
+class UsersFragmentAdapter(private val listener: IUserClickListener) :
+    ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(USERS_COMPARATOR) {
 
     private var listUsers = emptyList<Users>()
 
@@ -29,24 +31,23 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
         holder.bind(listUsers[position])
     }
 
-
-    override fun getItemCount(): Int {
-        return listUsers.size
-    }
-
     inner class UsersViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(users: Users) {
             with(binding) {
                 tvLogin.text = users.login
-                /*Glide.with(MAIN)
-                    .load("${BASE_URL}${listUsers[position].avatar_url}")
+                Glide.with(root.context)
+                    .load(users.avatarUrl)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(avatarImageView)*/
+                    .placeholder(R.drawable.baseline_portrait_24)
+                    .into(avatarImageView)
             }
         }
+    }
+
+    override fun getItemCount(): Int {
+        return listUsers.size
     }
 
     fun setList(list: List<Users>) {
@@ -56,11 +57,24 @@ class UsersFragmentAdapter : RecyclerView.Adapter<UsersFragmentAdapter.UsersView
 
     override fun onViewAttachedToWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener {
-            UsersFragment.clickMovie(listUsers[holder.adapterPosition])
+            listener.onItemClick(listUsers[holder.bindingAdapterPosition])
         }
     }
 
     override fun onViewDetachedFromWindow(holder: UsersViewHolder) {
         holder.itemView.setOnClickListener(null)
     }
+
+    companion object {
+        private val USERS_COMPARATOR = object : DiffUtil.ItemCallback<Users>() {
+            override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
+                return oldItem === newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }
+
