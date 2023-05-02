@@ -17,6 +17,7 @@
 
     <TextView
         android:id="@+id/tv_name"
+        style="@style/RegularTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
@@ -35,6 +36,7 @@
 
     <TextView
         android:id="@+id/tv_full_name"
+        style="@style/RegularTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
@@ -43,6 +45,7 @@
 
     <TextView
         android:id="@+id/tv_language"
+        style="@style/RegularTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
@@ -71,6 +74,7 @@
 
     <TextView
         android:id="@+id/tv_forks_count"
+        style="@style/RegularTextStyle.MediumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_margin"
@@ -89,6 +93,7 @@
 
     <TextView
         android:id="@+id/tv_description"
+        style="@style/RegularTextStyle.MediumText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/large_margin"
