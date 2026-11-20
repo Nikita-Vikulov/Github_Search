@@ -8,16 +8,20 @@ plugins {
 
 android {
     namespace 'com.example.githubsearch'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.githubsearch"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
-        viewBinding.enabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -76,14 +80,14 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
 
-    implementation "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
-    implementation "androidx.room:room-ktx:2.5.1"
+    implementation "androidx.room:room-runtime:2.6.1"
+    kapt "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
 
-    implementation "com.google.dagger:dagger:2.45"
-    implementation "com.google.dagger:dagger-android:2.45"
-    implementation "com.google.dagger:dagger-android-support:2.45"
-    kapt "com.google.dagger:dagger-compiler:2.45"
-    kapt "com.google.dagger:dagger-android-processor:2.45"
-    kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0'
+    implementation "com.google.dagger:dagger:2.51.1"
+    implementation "com.google.dagger:dagger-android:2.51.1"
+    implementation "com.google.dagger:dagger-android-support:2.51.1"
+    kapt "com.google.dagger:dagger-compiler:2.51.1"
+    kapt "com.google.dagger:dagger-android-processor:2.51.1"
+    kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
 }
