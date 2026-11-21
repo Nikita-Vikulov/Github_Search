@@ -14,7 +14,7 @@
 .cxx
 local.properties
 /.idea/AndroidProjectSystem.xml
-/.idea/runConfigurations.xml
 /.idea/deploymentTargetSelector.xml
-/.idea/migrations.xml
 /.idea/deviceManager.xml
+/.idea/migrations.xml
+/.idea/runConfigurations.xml

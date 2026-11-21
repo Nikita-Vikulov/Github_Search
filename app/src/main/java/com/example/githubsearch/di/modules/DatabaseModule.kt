@@ -24,7 +24,9 @@ object DatabaseModule {
             context.applicationContext,
             GithubDatabase::class.java,
             DATA_BASE
-        ).build()
+        )
+        .fallbackToDestructiveMigration()
+        .build()
     }
 
     @Provides
