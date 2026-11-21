@@ -10,6 +10,7 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/baseline_search_24"
+        android:roundIcon="@drawable/baseline_search_24"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubSearch"

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,11 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.common.StateMessage
 import com.example.githubsearch.presentation.theme.Dimens
+import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -50,6 +53,13 @@ fun UsersScreen(
             is UsersContract.SideEffect.ShowToastRes -> {
                 Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    LaunchedEffect(searchQuery) {
+        if (searchQuery.isNotBlank()) {
+            delay(500)
+            viewModel.getUsersByLogin(searchQuery.trim())
         }
     }
 
@@ -81,13 +91,11 @@ fun UsersScreen(
                 placeholder = { Text(stringResource(R.string.enter_user_name)) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                shape = RoundedCornerShape(12.dp),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
-                    onSearch = {
+                    onDone = {
                         keyboardController?.hide()
-                        if (searchQuery.isNotBlank()) {
-                            viewModel.getUsersByLogin(searchQuery.trim())
-                        }
                     }
                 )
             )
@@ -113,7 +121,7 @@ fun UsersStateContent(
         state.isLoading -> CircularProgressIndicator()
         state.users.isNotEmpty() -> UsersList(users = state.users, onUserClick = onUserClick)
         !state.errorMessage.isNullOrBlank() -> StateMessage(
-            text = state.errorMessage.orEmpty().ifBlank { stringResource(R.string.error_loading_users) },
+            text = state.errorMessage.ifBlank { stringResource(R.string.error_loading_users) },
             isError = true
         )
         else -> StateMessage(text = stringResource(R.string.no_users_found))

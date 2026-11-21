@@ -12,6 +12,7 @@ import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.details.DetailsScreen
 import com.example.githubsearch.presentation.details.DetailsViewModel
+import com.example.githubsearch.presentation.fileviewer.FileViewerScreen
 import com.example.githubsearch.presentation.history.HistoryScreen
 import com.example.githubsearch.presentation.history.HistoryViewModel
 import com.example.githubsearch.presentation.repository.RepositoryScreen
@@ -100,7 +101,7 @@ fun GithubNavGraph() {
             val name = Uri.decode(backStackEntry.arguments?.getString("name") ?: "")
             val fullName = Uri.decode(backStackEntry.arguments?.getString("fullName") ?: "")
             val language = Uri.decode(backStackEntry.arguments?.getString("language") ?: "")
-            val forksCount = backStackEntry.arguments?.getInt("forksCount") ?: 0
+            val forksCount = backStackEntry.arguments?.getInt("forksContext") ?: 0
             val description = Uri.decode(backStackEntry.arguments?.getString("description") ?: "")
 
             val repository = Repository(
@@ -113,6 +114,30 @@ fun GithubNavGraph() {
 
             RepositoryScreen(
                 repository = repository,
+                onFileClick = { fileItem ->
+                    val fileName = Uri.encode(fileItem.name)
+                    val downloadUrl = Uri.encode(fileItem.downloadUrl.orEmpty())
+                    navController.navigate("file_viewer/$fileName/$downloadUrl")
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(
+            route = "file_viewer/{fileName}/{downloadUrl}",
+            arguments = listOf(
+                navArgument("fileName") { type = NavType.StringType },
+                navArgument("downloadUrl") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val fileName = Uri.decode(backStackEntry.arguments?.getString("fileName") ?: "")
+            val downloadUrl = Uri.decode(backStackEntry.arguments?.getString("downloadUrl") ?: "")
+
+            FileViewerScreen(
+                fileName = fileName,
+                downloadUrl = downloadUrl,
                 onBackClick = {
                     navController.popBackStack()
                 }

@@ -19,4 +19,13 @@
     <string name="history_empty">История поиска пуста</string>
     <string name="back">Назад</string>
     <string name="history">История</string>
+    <string name="empty_file">Файл пуст</string>
+    <string name="repo_full_name">Full Name: %s</string>
+    <string name="repo_language">Language: %s</string>
+    <string name="repo_forks">Forks: %d</string>
+    <string name="repo_description">Description: %s</string>
+    <string name="directory_empty">Директория пуста</string>
+    <string name="file_size_bytes">%d bytes</string>
+    <string name="contents_root">Contents (Root)</string>
+    <string name="contents_path">Path: %s</string>
 </resources>
