@@ -1,6 +1,6 @@
 package com.example.githubsearch.data.api
 
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.model.Users
 import com.google.gson.annotations.SerializedName
 
 data class UsersResponse(

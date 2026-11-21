@@ -1,4 +1,7 @@
-package com.example.githubsearch.domain
+package com.example.githubsearch.domain.interfaces
+
+import com.example.githubsearch.domain.model.Repository
+import com.example.githubsearch.domain.model.Users
 
 interface INavigation {
     fun openHistoryFragment()

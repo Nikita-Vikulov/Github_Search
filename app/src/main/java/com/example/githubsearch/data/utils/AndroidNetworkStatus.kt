@@ -3,7 +3,7 @@ package com.example.githubsearch.data.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.example.githubsearch.domain.INetworkStatus
+import com.example.githubsearch.domain.interfaces.INetworkStatus
 
 class AndroidNetworkStatus(context: Context) : INetworkStatus {
 

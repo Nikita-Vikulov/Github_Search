@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
-import com.example.githubsearch.domain.IUserClickListener
-import com.example.githubsearch.domain.Users
-
+import com.example.githubsearch.domain.interfaces.IUserClickListener
+import com.example.githubsearch.domain.model.Users
 
 class HistoryFragmentAdapter(private val listener: IUserClickListener) : RecyclerView.Adapter<HistoryFragmentAdapter.HistoryViewHolder>() {
 
@@ -44,6 +43,7 @@ class HistoryFragmentAdapter(private val listener: IUserClickListener) : Recycle
             }
         }
     }
+
     fun submitList(list: List<Users>) {
         listUsers = list
         notifyDataSetChanged()

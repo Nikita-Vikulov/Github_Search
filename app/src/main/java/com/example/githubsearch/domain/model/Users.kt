@@ -1,4 +1,4 @@
-package com.example.githubsearch.domain
+package com.example.githubsearch.domain.model
 
 import android.os.Parcelable
 import androidx.room.Entity

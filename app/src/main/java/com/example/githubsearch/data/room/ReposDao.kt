@@ -1,7 +1,7 @@
 package com.example.githubsearch.data.room
 
 import androidx.room.*
-import com.example.githubsearch.domain.Repository
+import com.example.githubsearch.domain.model.Repository
 
 @Dao
 interface ReposDao {

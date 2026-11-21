@@ -1,9 +1,8 @@
 package com.example.githubsearch.data.room
 
 import androidx.room.*
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.model.Users
 import kotlinx.coroutines.flow.Flow
-
 
 @Dao
 interface UsersDao {

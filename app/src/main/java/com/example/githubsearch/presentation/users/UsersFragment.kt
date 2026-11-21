@@ -12,14 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.App
-import com.example.githubsearch.BaseFragment
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentUsersBinding
-import com.example.githubsearch.domain.INavigation
-import com.example.githubsearch.domain.IUserClickListener
-import com.example.githubsearch.domain.Users
-import com.example.githubsearch.presentation.ViewModelFactory
+import com.example.githubsearch.domain.interfaces.INavigation
+import com.example.githubsearch.domain.interfaces.IUserClickListener
+import com.example.githubsearch.domain.model.Users
+import com.example.githubsearch.presentation.common.BaseFragment
 import com.example.githubsearch.presentation.common.UiState
+import com.example.githubsearch.presentation.common.ViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

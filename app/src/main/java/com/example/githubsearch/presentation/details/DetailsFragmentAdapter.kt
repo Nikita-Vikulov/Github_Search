@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.databinding.ItemRepoBinding
-import com.example.githubsearch.domain.IRepositoryClickListener
-import com.example.githubsearch.domain.Repository
+import com.example.githubsearch.domain.interfaces.IRepositoryClickListener
+import com.example.githubsearch.domain.model.Repository
 
 class DetailsFragmentAdapter(private val listener: IRepositoryClickListener) :
     ListAdapter<Repository, DetailsFragmentAdapter.DetailsViewHolder>(REPOS_COMPARATOR) {
@@ -48,7 +48,7 @@ class DetailsFragmentAdapter(private val listener: IRepositoryClickListener) :
         notifyDataSetChanged()
     }
 
-    override fun onViewAttachedToWindow(holder: DetailsViewHolder) { //
+    override fun onViewAttachedToWindow(holder: DetailsViewHolder) {
         holder.itemView.setOnClickListener {
             listener.onItemClick(listRepos[holder.bindingAdapterPosition])
         }

@@ -3,7 +3,7 @@ package com.example.githubsearch.presentation.users
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubsearch.data.repository.UsersRepository
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

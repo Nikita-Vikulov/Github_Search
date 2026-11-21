@@ -1,4 +1,4 @@
-package com.example.githubsearch
+package com.example.githubsearch.util
 
 const val USER = "user"
 const val REPOSITORY = "repository"

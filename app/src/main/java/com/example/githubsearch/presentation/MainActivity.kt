@@ -6,12 +6,12 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.githubsearch.R
-import com.example.githubsearch.REPOSITORY
-import com.example.githubsearch.USER
 import com.example.githubsearch.databinding.ActivityMainBinding
-import com.example.githubsearch.domain.INavigation
-import com.example.githubsearch.domain.Repository
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.interfaces.INavigation
+import com.example.githubsearch.domain.model.Repository
+import com.example.githubsearch.domain.model.Users
+import com.example.githubsearch.util.REPOSITORY
+import com.example.githubsearch.util.USER
 
 class MainActivity : AppCompatActivity(), INavigation {
 

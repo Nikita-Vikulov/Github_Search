@@ -10,7 +10,6 @@ import com.example.githubsearch.di.DaggerAppComponent
 import com.example.githubsearch.di.modules.AppModule
 import javax.inject.Inject
 
-
 class App : Application() {
 
     companion object {
@@ -30,7 +29,6 @@ class App : Application() {
     lateinit var repositoryMapper: RepositoryMapper
 
     lateinit var appComponent: AppComponent
-
 
     override fun onCreate() {
         super.onCreate()

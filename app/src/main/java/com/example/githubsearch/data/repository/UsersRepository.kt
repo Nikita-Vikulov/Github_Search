@@ -3,8 +3,8 @@ package com.example.githubsearch.data.repository
 import com.example.githubsearch.data.api.ApiService
 import com.example.githubsearch.data.api.UsersResponse
 import com.example.githubsearch.data.room.UsersDao
-import com.example.githubsearch.domain.INetworkStatus
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.interfaces.INetworkStatus
+import com.example.githubsearch.domain.model.Users
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 

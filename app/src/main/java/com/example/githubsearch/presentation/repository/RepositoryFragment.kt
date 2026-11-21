@@ -3,10 +3,10 @@ package com.example.githubsearch.presentation.repository
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import com.example.githubsearch.BaseFragment
-import com.example.githubsearch.REPOSITORY
 import com.example.githubsearch.databinding.FragmentRepositoryBinding
-import com.example.githubsearch.domain.Repository
+import com.example.githubsearch.domain.model.Repository
+import com.example.githubsearch.presentation.common.BaseFragment
+import com.example.githubsearch.util.REPOSITORY
 
 class RepositoryFragment : BaseFragment<FragmentRepositoryBinding>() {
 

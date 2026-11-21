@@ -2,7 +2,7 @@ package com.example.githubsearch.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubsearch.presentation.ViewModelFactory
+import com.example.githubsearch.presentation.common.ViewModelFactory
 import com.example.githubsearch.presentation.details.DetailsViewModel
 import com.example.githubsearch.presentation.history.HistoryViewModel
 import com.example.githubsearch.presentation.users.UsersViewModel
@@ -32,7 +32,6 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(DetailsViewModel::class)
     protected abstract fun detailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
-
 }
 
 @Target(

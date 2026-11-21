@@ -1,6 +1,5 @@
 package com.example.githubsearch.di
 
-
 import android.app.Application
 import com.example.githubsearch.App
 import com.example.githubsearch.data.repository.ReposRepository
@@ -17,7 +16,6 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import javax.inject.Singleton
-
 
 @Singleton
 @Component(

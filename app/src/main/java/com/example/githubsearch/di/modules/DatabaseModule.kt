@@ -2,10 +2,10 @@ package com.example.githubsearch.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.githubsearch.DATA_BASE
 import com.example.githubsearch.data.room.GithubDatabase
 import com.example.githubsearch.data.room.ReposDao
 import com.example.githubsearch.data.room.UsersDao
+import com.example.githubsearch.util.DATA_BASE
 import dagger.Module
 import dagger.Provides
 

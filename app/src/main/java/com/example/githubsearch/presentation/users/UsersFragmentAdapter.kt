@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.ItemUserBinding
-import com.example.githubsearch.domain.IUserClickListener
-import com.example.githubsearch.domain.Users
+import com.example.githubsearch.domain.interfaces.IUserClickListener
+import com.example.githubsearch.domain.model.Users
 
 class UsersFragmentAdapter(private val listener: IUserClickListener) :
     ListAdapter<Users, UsersFragmentAdapter.UsersViewHolder>(USERS_COMPARATOR) {
