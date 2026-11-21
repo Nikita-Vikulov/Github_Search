@@ -1,13 +1,15 @@
 package com.example.githubsearch.presentation.details
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.githubsearch.data.ReposRepository
-import com.example.githubsearch.data.UsersRepository
+import com.example.githubsearch.data.repository.ReposRepository
+import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.Repository
 import com.example.githubsearch.domain.Users
+import com.example.githubsearch.presentation.common.UiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,18 +17,17 @@ class DetailsViewModel @Inject constructor(
     private val userRepository: UsersRepository,
     private val repoRepository: ReposRepository
 ) : ViewModel() {
-    val myRepos: MutableLiveData<List<Repository>> = MutableLiveData()
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _uiState = MutableStateFlow<UiState<List<Repository>>>(UiState.Idle)
+    val uiState: StateFlow<UiState<List<Repository>>> = _uiState.asStateFlow()
 
     fun getReposByLogin(login: String) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.value = UiState.Loading
             try {
-                myRepos.value = repoRepository.getReposByLogin(login)
-            } finally {
-                _isLoading.value = false
+                val repos = repoRepository.getReposByLogin(login)
+                _uiState.value = UiState.Success(repos)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

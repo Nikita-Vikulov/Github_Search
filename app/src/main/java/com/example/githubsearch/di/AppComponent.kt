@@ -3,8 +3,8 @@ package com.example.githubsearch.di
 
 import android.app.Application
 import com.example.githubsearch.App
-import com.example.githubsearch.data.ReposRepository
-import com.example.githubsearch.data.UsersRepository
+import com.example.githubsearch.data.repository.ReposRepository
+import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.di.modules.ApiModule
 import com.example.githubsearch.di.modules.AppModule
 import com.example.githubsearch.di.modules.DatabaseModule

@@ -1,31 +1,30 @@
 package com.example.githubsearch.presentation.users
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.githubsearch.data.UsersRepository
+import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.Users
+import com.example.githubsearch.presentation.common.UiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UsersViewModel @Inject constructor(
     private val userRepository: UsersRepository
 ) : ViewModel() {
-    private val _myUsers = MutableLiveData<List<Users>>()
-    val myUsers: LiveData<List<Users>> = _myUsers
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _uiState = MutableStateFlow<UiState<List<Users>>>(UiState.Idle)
+    val uiState: StateFlow<UiState<List<Users>>> = _uiState.asStateFlow()
 
     fun getUsersByLogin(queryUser: String) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.value = UiState.Loading
             try {
                 val users = userRepository.getUsersByLogin(queryUser)
-                _myUsers.postValue(users)
-            } finally {
-                _isLoading.postValue(false)
+                _uiState.value = UiState.Success(users)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

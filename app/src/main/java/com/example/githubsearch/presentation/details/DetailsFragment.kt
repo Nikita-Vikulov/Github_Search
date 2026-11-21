@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubsearch.*
@@ -16,6 +18,8 @@ import com.example.githubsearch.domain.IRepositoryClickListener
 import com.example.githubsearch.domain.Repository
 import com.example.githubsearch.domain.Users
 import com.example.githubsearch.presentation.ViewModelFactory
+import com.example.githubsearch.presentation.common.UiState
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -63,11 +67,26 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(), IRepositoryClick
                 .into(avatarImageView)
         }
         detailsViewModel.getReposByLogin(currentUser.login)
-        detailsViewModel.myRepos.observe(viewLifecycleOwner) { data ->
-            adapter.setList(data)
-        }
-        detailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                detailsViewModel.uiState.collect { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is UiState.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            adapter.setList(state.data)
+                        }
+                        is UiState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                        is UiState.Idle -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
+                }
+            }
         }
         recyclerView = binding.recyclerViewRepos
         recyclerView.adapter = adapter

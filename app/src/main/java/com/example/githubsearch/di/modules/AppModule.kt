@@ -2,12 +2,12 @@ package com.example.githubsearch.di.modules
 
 import android.content.Context
 import com.example.githubsearch.App
-import com.example.githubsearch.data.AndroidNetworkStatus
-import com.example.githubsearch.data.ApiService
-import com.example.githubsearch.data.ReposRepository
-import com.example.githubsearch.data.RepositoryMapper
-import com.example.githubsearch.data.UsersRepository
-import com.example.githubsearch.data.GithubDatabase
+import com.example.githubsearch.data.utils.AndroidNetworkStatus
+import com.example.githubsearch.data.api.ApiService
+import com.example.githubsearch.data.repository.ReposRepository
+import com.example.githubsearch.data.repository.RepositoryMapper
+import com.example.githubsearch.data.repository.UsersRepository
+import com.example.githubsearch.data.room.GithubDatabase
 import com.example.githubsearch.domain.INetworkStatus
 import dagger.Module
 import dagger.Provides

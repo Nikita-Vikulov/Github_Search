@@ -1,4 +1,4 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.api
 
 import com.example.githubsearch.domain.Repository
 import retrofit2.Response

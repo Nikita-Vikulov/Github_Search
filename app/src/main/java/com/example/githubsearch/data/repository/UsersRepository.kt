@@ -1,6 +1,8 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.repository
 
-
+import com.example.githubsearch.data.api.ApiService
+import com.example.githubsearch.data.api.UsersResponse
+import com.example.githubsearch.data.room.UsersDao
 import com.example.githubsearch.domain.INetworkStatus
 import com.example.githubsearch.domain.Users
 import kotlinx.coroutines.flow.Flow

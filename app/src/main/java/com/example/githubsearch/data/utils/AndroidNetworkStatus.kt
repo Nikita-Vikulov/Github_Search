@@ -1,4 +1,4 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

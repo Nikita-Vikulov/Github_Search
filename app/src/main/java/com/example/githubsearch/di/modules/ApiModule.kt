@@ -1,7 +1,7 @@
 package com.example.githubsearch.di.modules
 
 import com.example.githubsearch.BuildConfig
-import com.example.githubsearch.data.ApiService
+import com.example.githubsearch.data.api.ApiService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.room
 
 import androidx.room.*
 import com.example.githubsearch.domain.Repository

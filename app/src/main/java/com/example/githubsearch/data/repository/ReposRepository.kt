@@ -1,5 +1,7 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.repository
 
+import com.example.githubsearch.data.api.ApiService
+import com.example.githubsearch.data.room.ReposDao
 import com.example.githubsearch.domain.INetworkStatus
 import com.example.githubsearch.domain.Repository
 

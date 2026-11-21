@@ -8,6 +8,8 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubsearch.App
 import com.example.githubsearch.BaseFragment
@@ -17,6 +19,8 @@ import com.example.githubsearch.domain.INavigation
 import com.example.githubsearch.domain.IUserClickListener
 import com.example.githubsearch.domain.Users
 import com.example.githubsearch.presentation.ViewModelFactory
+import com.example.githubsearch.presentation.common.UiState
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UsersFragment :
@@ -62,11 +66,26 @@ class UsersFragment :
                 return true
             }
         })
-        usersViewModel.myUsers.observe(viewLifecycleOwner) { list ->
-            adapter.setList(list)
-        }
-        usersViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                usersViewModel.uiState.collect { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is UiState.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            adapter.setList(state.data)
+                        }
+                        is UiState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                        is UiState.Idle -> {
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
+                }
+            }
         }
     }
 

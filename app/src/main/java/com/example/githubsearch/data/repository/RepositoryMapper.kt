@@ -1,4 +1,4 @@
-package com.example.githubsearch.data
+package com.example.githubsearch.data.repository
 
 import com.example.githubsearch.domain.Repository
 

@@ -1,10 +1,10 @@
 package com.example.githubsearch
 
 import android.app.Application
-import com.example.githubsearch.data.ReposRepository
-import com.example.githubsearch.data.RepositoryMapper
-import com.example.githubsearch.data.UsersRepository
-import com.example.githubsearch.data.GithubDatabase
+import com.example.githubsearch.data.repository.ReposRepository
+import com.example.githubsearch.data.repository.RepositoryMapper
+import com.example.githubsearch.data.repository.UsersRepository
+import com.example.githubsearch.data.room.GithubDatabase
 import com.example.githubsearch.di.AppComponent
 import com.example.githubsearch.di.DaggerAppComponent
 import com.example.githubsearch.di.modules.AppModule
