@@ -1,40 +1,39 @@
 package com.example.githubsearch.presentation.details
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.example.githubsearch.R
 import com.example.githubsearch.data.repository.ReposRepository
 import com.example.githubsearch.data.repository.UsersRepository
-import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val userRepository: UsersRepository,
     private val repoRepository: ReposRepository
-) : ViewModel() {
-    private val _uiState = MutableStateFlow<UiState<List<Repository>>>(UiState.Idle)
-    val uiState: StateFlow<UiState<List<Repository>>> = _uiState.asStateFlow()
+) : ContainerHost<DetailsContract.State, DetailsContract.SideEffect>, ViewModel() {
 
-    fun getReposByLogin(login: String) {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val repos = repoRepository.getReposByLogin(login)
-                _uiState.value = UiState.Success(repos)
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+    override val container = container<DetailsContract.State, DetailsContract.SideEffect>(DetailsContract.State())
+
+    fun getReposByLogin(login: String) = intent {
+        reduce { state.copy(isLoading = true, errorMessage = null) }
+        try {
+            val repos = repoRepository.getReposByLogin(login)
+            reduce { state.copy(isLoading = false, repos = repos) }
+            if (repos.isEmpty()) {
+                postSideEffect(DetailsContract.SideEffect.ShowToastRes(R.string.no_repos_found))
             }
+        } catch (e: Exception) {
+            val errorMsg = e.localizedMessage.orEmpty().ifBlank { "Unknown error" }
+            reduce { state.copy(isLoading = false, errorMessage = errorMsg) }
+            postSideEffect(DetailsContract.SideEffect.ShowToast(errorMsg))
         }
     }
 
-    fun insert(user: Users) = viewModelScope.launch {
+    fun insert(user: Users) = intent {
         userRepository.insertUser(user)
     }
 }

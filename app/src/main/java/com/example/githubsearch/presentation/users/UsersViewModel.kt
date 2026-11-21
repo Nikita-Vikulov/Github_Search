@@ -1,33 +1,32 @@
 package com.example.githubsearch.presentation.users
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.example.githubsearch.R
 import com.example.githubsearch.data.repository.UsersRepository
-import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
 class UsersViewModel @Inject constructor(
     private val userRepository: UsersRepository
-) : ViewModel() {
-    private val _uiState = MutableStateFlow<UiState<List<Users>>>(UiState.Idle)
-    val uiState: StateFlow<UiState<List<Users>>> = _uiState.asStateFlow()
+) : ContainerHost<UsersContract.State, UsersContract.SideEffect>, ViewModel() {
 
-    fun getUsersByLogin(queryUser: String) {
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val users = userRepository.getUsersByLogin(queryUser)
-                _uiState.value = UiState.Success(users)
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+    override val container = container<UsersContract.State, UsersContract.SideEffect>(UsersContract.State())
+
+    fun getUsersByLogin(queryUser: String) = intent {
+        reduce { state.copy(isLoading = true, errorMessage = null) }
+        try {
+            val users = userRepository.getUsersByLogin(queryUser)
+            reduce { state.copy(isLoading = false, users = users) }
+            if (users.isEmpty()) {
+                postSideEffect(UsersContract.SideEffect.ShowToastRes(R.string.no_users_found))
             }
+        } catch (e: Exception) {
+            val errorMsg = e.localizedMessage.orEmpty().ifBlank { "Unknown error" }
+            reduce { state.copy(isLoading = false, errorMessage = errorMsg) }
+            postSideEffect(UsersContract.SideEffect.ShowToast(errorMsg))
         }
     }
 }

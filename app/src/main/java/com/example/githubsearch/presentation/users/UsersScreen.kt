@@ -21,12 +21,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.common.UiState
+import com.example.githubsearch.presentation.common.StateMessage
+import com.example.githubsearch.presentation.theme.Dimens
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,10 +37,21 @@ fun UsersScreen(
     onUserClick: (Users) -> Unit,
     onHistoryClick: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
+
+    viewModel.collectSideEffect { effect ->
+        when (effect) {
+            is UsersContract.SideEffect.ShowToast -> {
+                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+            }
+            is UsersContract.SideEffect.ShowToastRes -> {
+                Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -48,7 +61,7 @@ fun UsersScreen(
                     IconButton(onClick = onHistoryClick) {
                         Icon(
                             imageVector = Icons.Default.History,
-                            contentDescription = "History"
+                            contentDescription = stringResource(R.string.history)
                         )
                     }
                 }
@@ -59,7 +72,7 @@ fun UsersScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(Dimens.paddingLarge)
         ) {
             OutlinedTextField(
                 value = searchQuery,
@@ -79,47 +92,45 @@ fun UsersScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(Dimens.paddingLarge))
 
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                when (val state = uiState) {
-                    is UiState.Loading -> {
-                        CircularProgressIndicator()
-                    }
-                    is UiState.Success -> {
-                        if (state.data.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.no_users_found),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                items(state.data, key = { it.id }) { user ->
-                                    UserItem(user = user, onClick = { onUserClick(user) })
-                                }
-                            }
-                        }
-                    }
-                    is UiState.Error -> {
-                        LaunchedEffect(state) {
-                            val msg = state.message.ifBlank { context.getString(R.string.error_loading_users) }
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                        }
-                        Text(
-                            text = state.message.ifBlank { stringResource(R.string.error_loading_users) },
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                    is UiState.Idle -> {}
-                }
+                UsersStateContent(state = state, onUserClick = onUserClick)
             }
+        }
+    }
+}
+
+@Composable
+fun UsersStateContent(
+    state: UsersContract.State,
+    onUserClick: (Users) -> Unit
+) {
+    when {
+        state.isLoading -> CircularProgressIndicator()
+        state.users.isNotEmpty() -> UsersList(users = state.users, onUserClick = onUserClick)
+        !state.errorMessage.isNullOrBlank() -> StateMessage(
+            text = state.errorMessage.orEmpty().ifBlank { stringResource(R.string.error_loading_users) },
+            isError = true
+        )
+        else -> StateMessage(text = stringResource(R.string.no_users_found))
+    }
+}
+
+@Composable
+fun UsersList(
+    users: List<Users>,
+    onUserClick: (Users) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+    ) {
+        items(users, key = { it.id }) { user ->
+            UserItem(user = user, onClick = { onUserClick(user) })
         }
     }
 }
@@ -137,25 +148,52 @@ fun UserItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(Dimens.paddingNormal),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = user.avatarUrl,
+                model = user.avatarUrl.orEmpty(),
                 contentDescription = user.login,
                 placeholder = painterResource(R.drawable.baseline_portrait_24),
                 error = painterResource(R.drawable.baseline_portrait_24),
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(Dimens.avatarSmall)
                     .clip(CircleShape)
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(Dimens.paddingLarge))
 
             Text(
                 text = user.login,
                 style = MaterialTheme.typography.titleMedium
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun UsersScreenSuccessPreview() {
+    com.example.githubsearch.presentation.theme.GithubSearchTheme {
+        UsersStateContent(
+            state = UsersContract.State(
+                users = listOf(
+                    Users(id = 1, login = "octocat"),
+                    Users(id = 2, login = "torvalds")
+                )
+            ),
+            onUserClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun UsersScreenLoadingPreview() {
+    com.example.githubsearch.presentation.theme.GithubSearchTheme {
+        UsersStateContent(
+            state = UsersContract.State(isLoading = true),
+            onUserClick = {}
+        )
     }
 }

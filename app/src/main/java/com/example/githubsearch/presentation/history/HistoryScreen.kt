@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Users
+import com.example.githubsearch.presentation.theme.Dimens
 import com.example.githubsearch.presentation.users.UserItem
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,17 +25,31 @@ fun HistoryScreen(
     onUserClick: (Users) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val users by viewModel.allUsers.collectAsStateWithLifecycle()
+    val state by viewModel.collectAsState()
 
+    HistoryContent(
+        users = state.users,
+        onUserClick = onUserClick,
+        onBackClick = onBackClick
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HistoryContent(
+    users: List<Users>,
+    onUserClick: (Users) -> Unit,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Search History") },
+                title = { Text(stringResource(R.string.history_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -43,18 +60,18 @@ fun HistoryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(Dimens.paddingLarge),
             contentAlignment = Alignment.Center
         ) {
             if (users.isEmpty()) {
                 Text(
-                    text = "History is empty",
+                    text = stringResource(R.string.history_empty),
                     style = MaterialTheme.typography.bodyLarge
                 )
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
                 ) {
                     items(users, key = { it.id }) { user ->
                         UserItem(user = user, onClick = { onUserClick(user) })
@@ -62,5 +79,20 @@ fun HistoryScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HistoryScreenPreview() {
+    com.example.githubsearch.presentation.theme.GithubSearchTheme {
+        HistoryContent(
+            users = listOf(
+                Users(id = 1, login = "octocat"),
+                Users(id = 2, login = "torvalds")
+            ),
+            onUserClick = {},
+            onBackClick = {}
+        )
     }
 }

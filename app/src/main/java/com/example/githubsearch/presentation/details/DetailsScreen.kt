@@ -18,13 +18,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.common.UiState
+import com.example.githubsearch.presentation.common.StateMessage
+import com.example.githubsearch.presentation.theme.Dimens
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,8 +36,19 @@ fun DetailsScreen(
     onRepoClick: (Repository) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.collectAsState()
     val context = LocalContext.current
+
+    viewModel.collectSideEffect { effect ->
+        when (effect) {
+            is DetailsContract.SideEffect.ShowToast -> {
+                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+            }
+            is DetailsContract.SideEffect.ShowToastRes -> {
+                Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     LaunchedEffect(user) {
         viewModel.insert(user)
@@ -50,7 +63,7 @@ fun DetailsScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -61,22 +74,22 @@ fun DetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(Dimens.paddingLarge)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
-                    model = user.avatarUrl,
+                    model = user.avatarUrl.orEmpty(),
                     contentDescription = user.login,
                     placeholder = painterResource(R.drawable.baseline_portrait_24),
                     error = painterResource(R.drawable.baseline_portrait_24),
                     modifier = Modifier
-                        .size(72.dp)
+                        .size(Dimens.avatarLarge)
                         .clip(CircleShape)
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(Dimens.paddingLarge))
 
                 Column {
                     Text(
@@ -90,54 +103,52 @@ fun DetailsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(Dimens.paddingExtraLarge))
 
             Text(
                 text = stringResource(R.string.repository),
                 style = MaterialTheme.typography.titleLarge
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(Dimens.paddingNormal))
 
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                when (val state = uiState) {
-                    is UiState.Loading -> {
-                        CircularProgressIndicator()
-                    }
-                    is UiState.Success -> {
-                        if (state.data.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.no_repos_found),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                items(state.data, key = { it.id }) { repo ->
-                                    RepoItem(repo = repo, onClick = { onRepoClick(repo) })
-                                }
-                            }
-                        }
-                    }
-                    is UiState.Error -> {
-                        LaunchedEffect(state) {
-                            val msg = state.message.ifBlank { context.getString(R.string.error_loading_repos) }
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                        }
-                        Text(
-                            text = state.message.ifBlank { stringResource(R.string.error_loading_repos) },
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
-                    is UiState.Idle -> {}
-                }
+                DetailsStateContent(state = state, onRepoClick = onRepoClick)
             }
+        }
+    }
+}
+
+@Composable
+fun DetailsStateContent(
+    state: DetailsContract.State,
+    onRepoClick: (Repository) -> Unit
+) {
+    when {
+        state.isLoading -> CircularProgressIndicator()
+        state.repos.isNotEmpty() -> ReposList(repos = state.repos, onRepoClick = onRepoClick)
+        !state.errorMessage.isNullOrBlank() -> StateMessage(
+            text = state.errorMessage.ifBlank { stringResource(R.string.error_loading_repos) },
+            isError = true
+        )
+        else -> StateMessage(text = stringResource(R.string.no_repos_found))
+    }
+}
+
+@Composable
+fun ReposList(
+    repos: List<Repository>,
+    onRepoClick: (Repository) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
+    ) {
+        items(repos, key = { it.id }) { repo ->
+            RepoItem(repo = repo, onClick = { onRepoClick(repo) })
         }
     }
 }
@@ -155,14 +166,14 @@ fun RepoItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(Dimens.paddingLarge)
         ) {
             Text(
-                text = repo.name ?: "",
+                text = repo.name.orEmpty(),
                 style = MaterialTheme.typography.titleMedium
             )
             if (!repo.description.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(Dimens.paddingSmall))
                 Text(
                     text = repo.description,
                     style = MaterialTheme.typography.bodyMedium,
@@ -170,5 +181,32 @@ fun RepoItem(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailsScreenSuccessPreview() {
+    com.example.githubsearch.presentation.theme.GithubSearchTheme {
+        DetailsStateContent(
+            state = DetailsContract.State(
+                repos = listOf(
+                    Repository(id = 1, name = "Hello-World", description = "My first repo on GitHub"),
+                    Repository(id = 2, name = "Spoon-Knife", description = "Demo repository for forking")
+                )
+            ),
+            onRepoClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailsScreenLoadingPreview() {
+    com.example.githubsearch.presentation.theme.GithubSearchTheme {
+        DetailsStateContent(
+            state = DetailsContract.State(isLoading = true),
+            onRepoClick = {}
+        )
     }
 }
