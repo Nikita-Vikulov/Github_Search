@@ -11,4 +11,8 @@
     <string name="forks_count">Forks count:</string>
     <string name="description">Description:</string>
     <string name="enter_user_name">Enter user name</string>
+    <string name="no_users_found">Пользователи не найдены</string>
+    <string name="no_repos_found">У пользователя нет доступных репозиториев</string>
+    <string name="error_loading_users">Ошибка при загрузке пользователей</string>
+    <string name="error_loading_repos">Ошибка при загрузке репозиториев</string>
 </resources>

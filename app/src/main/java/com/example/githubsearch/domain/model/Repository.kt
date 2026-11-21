@@ -9,28 +9,26 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "repos_table")
 @Parcelize
 data class Repository(
-
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    val id: Int = 0,
 
     @SerializedName("node_id")
-    var nodeId: String = "",
+    val nodeId: String? = null,
 
     @SerializedName("name")
-    var name: String = "",
+    val name: String? = null,
 
     @SerializedName("full_name")
-    var fullName: String = "",
+    val fullName: String? = null,
 
     @SerializedName("description")
-    var description: String = "",
+    val description: String? = null,
 
     @SerializedName("language")
-    var language: String = "",
+    val language: String? = null,
 
     @SerializedName("forks_count")
-    var forksCount: Int = 0,
+    val forksCount: Int = 0,
 
-    var login: String = "",
-
+    val login: String = ""
 ) : Parcelable

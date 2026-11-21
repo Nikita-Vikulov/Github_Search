@@ -7,12 +7,14 @@ import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.common.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val userRepository: UsersRepository,
     private val repoRepository: ReposRepository

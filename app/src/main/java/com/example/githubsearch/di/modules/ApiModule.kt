@@ -4,12 +4,18 @@ import com.example.githubsearch.BuildConfig
 import com.example.githubsearch.data.api.ApiService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
-class ApiModule {
+@InstallIn(SingletonComponent::class)
+object ApiModule {
+
     @Provides
+    @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
@@ -18,6 +24,7 @@ class ApiModule {
     }
 
     @Provides
+    @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }

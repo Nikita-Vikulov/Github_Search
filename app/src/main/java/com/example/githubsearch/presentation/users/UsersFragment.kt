@@ -4,14 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubsearch.App
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentUsersBinding
 import com.example.githubsearch.domain.interfaces.INavigation
@@ -19,18 +19,13 @@ import com.example.githubsearch.domain.interfaces.IUserClickListener
 import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.common.BaseFragment
 import com.example.githubsearch.presentation.common.UiState
-import com.example.githubsearch.presentation.common.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class UsersFragment :
-    BaseFragment<FragmentUsersBinding>(), IUserClickListener {
+@AndroidEntryPoint
+class UsersFragment : BaseFragment<FragmentUsersBinding>(), IUserClickListener {
 
-    @Inject
-    lateinit var viewModeFactory: ViewModelFactory
-    val usersViewModel: UsersViewModel by lazy {
-        ViewModelProvider(this, viewModeFactory)[UsersViewModel::class.java]
-    }
+    val usersViewModel: UsersViewModel by viewModels()
 
     private lateinit var recyclerView: RecyclerView
     private val adapter by lazy { UsersFragmentAdapter(this) }
@@ -48,7 +43,6 @@ class UsersFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity().application as App).appComponent.inject(this)
         setupMenu()
         init()
     }
@@ -76,9 +70,14 @@ class UsersFragment :
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             adapter.setList(state.data)
+                            if (state.data.isEmpty()) {
+                                Toast.makeText(requireContext(), R.string.no_users_found, Toast.LENGTH_SHORT).show()
+                            }
                         }
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
+                            val message = state.message.ifBlank { getString(R.string.error_loading_users) }
+                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                         }
                         is UiState.Idle -> {
                             binding.progressBar.visibility = View.GONE

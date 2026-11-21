@@ -12,7 +12,9 @@ import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.util.REPOSITORY
 import com.example.githubsearch.util.USER
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), INavigation {
 
     private var _binding: ActivityMainBinding? = null

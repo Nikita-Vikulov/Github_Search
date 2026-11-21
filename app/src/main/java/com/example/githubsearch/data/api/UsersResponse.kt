@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class UsersResponse(
     @SerializedName("total_count")
-    val totalCount: Int,
+    val totalCount: Int = 0,
 
     @SerializedName("incomplete_results")
-    val incompleteResults: Boolean,
+    val incompleteResults: Boolean = false,
 
     @SerializedName("items")
-    val items: ArrayList<Users>?
+    val items: List<Users>? = null
 )

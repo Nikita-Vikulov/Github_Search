@@ -13,12 +13,11 @@ data class Users(
     val login: String,
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
 
     @SerializedName("avatar_url")
-    val avatarUrl: String,
+    val avatarUrl: String? = null,
 
     @SerializedName("repos_url")
-    val reposUrl: String
-
+    val reposUrl: String? = null
 ) : Parcelable

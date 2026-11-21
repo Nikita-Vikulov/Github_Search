@@ -1,7 +1,6 @@
 package com.example.githubsearch.di.modules
 
 import android.content.Context
-import com.example.githubsearch.App
 import com.example.githubsearch.data.api.ApiService
 import com.example.githubsearch.data.repository.ReposRepository
 import com.example.githubsearch.data.repository.RepositoryMapper
@@ -11,14 +10,17 @@ import com.example.githubsearch.data.utils.AndroidNetworkStatus
 import com.example.githubsearch.domain.interfaces.INetworkStatus
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-class AppModule(private val application: App) {
+@InstallIn(SingletonComponent::class)
+object AppModule {
 
     @Provides
-    fun provideContext(): Context = application
-
-    @Provides
+    @Singleton
     fun provideUsersRepository(
         database: GithubDatabase,
         networkStatus: INetworkStatus,
@@ -28,6 +30,7 @@ class AppModule(private val application: App) {
     }
 
     @Provides
+    @Singleton
     fun provideReposRepository(
         database: GithubDatabase,
         networkStatus: INetworkStatus,
@@ -38,12 +41,16 @@ class AppModule(private val application: App) {
     }
 
     @Provides
+    @Singleton
     fun provideRepositoryMapper(): RepositoryMapper {
         return RepositoryMapper()
     }
 
     @Provides
-    fun provideNetworkStatus(): INetworkStatus {
-        return AndroidNetworkStatus(application)
+    @Singleton
+    fun provideNetworkStatus(
+        @ApplicationContext context: Context
+    ): INetworkStatus {
+        return AndroidNetworkStatus(context)
     }
 }

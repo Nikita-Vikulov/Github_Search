@@ -1,43 +1,17 @@
 package com.example.githubsearch
 
 import android.app.Application
-import com.example.githubsearch.data.repository.ReposRepository
-import com.example.githubsearch.data.repository.RepositoryMapper
-import com.example.githubsearch.data.repository.UsersRepository
-import com.example.githubsearch.data.room.GithubDatabase
-import com.example.githubsearch.di.AppComponent
-import com.example.githubsearch.di.DaggerAppComponent
-import com.example.githubsearch.di.modules.AppModule
-import javax.inject.Inject
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
         lateinit var instance: App
     }
 
-    @Inject
-    lateinit var database: GithubDatabase
-
-    @Inject
-    lateinit var userRepository: UsersRepository
-
-    @Inject
-    lateinit var repoRepository: ReposRepository
-
-    @Inject
-    lateinit var repositoryMapper: RepositoryMapper
-
-    lateinit var appComponent: AppComponent
-
     override fun onCreate() {
         super.onCreate()
         instance = this
-        appComponent = DaggerAppComponent.builder()
-            .app(this)
-            .appModule(AppModule(this))
-            .build()
-
-        appComponent.inject(this)
     }
 }

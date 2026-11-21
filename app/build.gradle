@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -37,11 +38,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 
@@ -64,6 +65,10 @@ dependencies {
     implementation 'androidx.paging:paging-common-ktx:3.3.5'
     implementation 'androidx.paging:paging-runtime-ktx:3.3.5'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:5.3.1'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
@@ -78,10 +83,8 @@ dependencies {
     kapt "androidx.room:room-compiler:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
 
-    implementation "com.google.dagger:dagger:2.51.1"
-    implementation "com.google.dagger:dagger-android:2.51.1"
-    implementation "com.google.dagger:dagger-android-support:2.51.1"
-    kapt "com.google.dagger:dagger-compiler:2.51.1"
-    kapt "com.google.dagger:dagger-android-processor:2.51.1"
+    implementation 'androidx.fragment:fragment-ktx:1.8.5'
+    implementation 'com.google.dagger:hilt-android:2.51.1'
+    kapt 'com.google.dagger:hilt-compiler:2.51.1'
     kapt 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
 }
