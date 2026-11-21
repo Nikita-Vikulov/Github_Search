@@ -3,16 +3,16 @@ package com.example.githubsearch.di
 
 import android.app.Application
 import com.example.githubsearch.App
+import com.example.githubsearch.data.ReposRepository
+import com.example.githubsearch.data.UsersRepository
 import com.example.githubsearch.di.modules.ApiModule
 import com.example.githubsearch.di.modules.AppModule
 import com.example.githubsearch.di.modules.DatabaseModule
 import com.example.githubsearch.di.modules.ViewModelsModule
-import com.example.githubsearch.repository.ReposRepository
-import com.example.githubsearch.repository.UsersRepository
-import com.example.githubsearch.view.MainActivity
-import com.example.githubsearch.view.details.DetailsFragment
-import com.example.githubsearch.view.history.HistoryFragment
-import com.example.githubsearch.view.users.UsersFragment
+import com.example.githubsearch.presentation.MainActivity
+import com.example.githubsearch.presentation.details.DetailsFragment
+import com.example.githubsearch.presentation.history.HistoryFragment
+import com.example.githubsearch.presentation.users.UsersFragment
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

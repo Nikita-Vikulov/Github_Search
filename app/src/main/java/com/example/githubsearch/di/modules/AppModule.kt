@@ -2,13 +2,13 @@ package com.example.githubsearch.di.modules
 
 import android.content.Context
 import com.example.githubsearch.App
-import com.example.githubsearch.api.ApiService
-import com.example.githubsearch.repository.ReposRepository
-import com.example.githubsearch.repository.RepositoryMapper
-import com.example.githubsearch.repository.UsersRepository
-import com.example.githubsearch.room.GithubDatabase
-import com.example.githubsearch.view.utils.AndroidNetworkStatus
-import com.example.githubsearch.view.utils.INetworkStatus
+import com.example.githubsearch.data.AndroidNetworkStatus
+import com.example.githubsearch.data.ApiService
+import com.example.githubsearch.data.ReposRepository
+import com.example.githubsearch.data.RepositoryMapper
+import com.example.githubsearch.data.UsersRepository
+import com.example.githubsearch.data.GithubDatabase
+import com.example.githubsearch.domain.INetworkStatus
 import dagger.Module
 import dagger.Provides
 
@@ -49,5 +49,3 @@ class AppModule(private val application: App) {
     }
 
 }
-
-

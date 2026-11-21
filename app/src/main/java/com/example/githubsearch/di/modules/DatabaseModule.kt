@@ -3,9 +3,9 @@ package com.example.githubsearch.di.modules
 import android.content.Context
 import androidx.room.Room
 import com.example.githubsearch.DATA_BASE
-import com.example.githubsearch.room.GithubDatabase
-import com.example.githubsearch.room.ReposDao
-import com.example.githubsearch.room.UsersDao
+import com.example.githubsearch.data.GithubDatabase
+import com.example.githubsearch.data.ReposDao
+import com.example.githubsearch.data.UsersDao
 import dagger.Module
 import dagger.Provides
 

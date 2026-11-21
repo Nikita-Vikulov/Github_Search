@@ -5,7 +5,7 @@
     app:startDestination="@id/usersFragment">
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.githubsearch.view.details.DetailsFragment"
+        android:name="com.example.githubsearch.presentation.details.DetailsFragment"
         android:label="DetailsFragment" >
         <action
             android:id="@+id/action_detailsFragment_to_usersFragment"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/usersFragment"
-        android:name="com.example.githubsearch.view.users.UsersFragment"
+        android:name="com.example.githubsearch.presentation.users.UsersFragment"
         android:label="UsersFragment" >
         <action
             android:id="@+id/action_usersFragment_to_detailsFragment"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.githubsearch.view.history.HistoryFragment"
+        android:name="com.example.githubsearch.presentation.history.HistoryFragment"
         android:label="HistoryFragment" >
         <action
             android:id="@+id/action_historyFragment_to_detailsFragment"
@@ -41,6 +41,6 @@
     </fragment>
     <fragment
         android:id="@+id/repositoryFragment"
-        android:name="com.example.githubsearch.view.repository.RepositoryFragment"
+        android:name="com.example.githubsearch.presentation.repository.RepositoryFragment"
         android:label="RepositoryFragment" />
 </navigation>

@@ -2,10 +2,10 @@ package com.example.githubsearch.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubsearch.view.ViewModelFactory
-import com.example.githubsearch.view.details.DetailsViewModel
-import com.example.githubsearch.view.history.HistoryViewModel
-import com.example.githubsearch.view.users.UsersViewModel
+import com.example.githubsearch.presentation.ViewModelFactory
+import com.example.githubsearch.presentation.details.DetailsViewModel
+import com.example.githubsearch.presentation.history.HistoryViewModel
+import com.example.githubsearch.presentation.users.UsersViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
