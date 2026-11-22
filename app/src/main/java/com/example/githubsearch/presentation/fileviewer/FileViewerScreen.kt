@@ -16,11 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -152,6 +148,13 @@ fun FileViewerContent(
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
+                state.errorMessageResId != null -> {
+                    Text(
+                        text = stringResource(state.errorMessageResId),
+                        color = SyntaxColors.error,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
                 else -> {
                     Text(
                         text = stringResource(R.string.empty_file),
@@ -162,50 +165,6 @@ fun FileViewerContent(
             }
         }
     }
-}
-
-fun highlightCode(text: String): AnnotatedString {
-    return buildAnnotatedString {
-        var currentIndex = 0
-        val length = text.length
-
-        while (currentIndex < length) {
-            var matched: MatchResult? = null
-            var matchedType = SyntaxTokenType.TEXT
-
-            for ((rule, type) in syntaxTokenRules) {
-                val match = rule.find(text, currentIndex)
-                if (match != null && match.range.first == currentIndex) {
-                    matched = match
-                    matchedType = type
-                    break
-                }
-            }
-
-            if (matched != null) {
-                val color = when (matchedType) {
-                    SyntaxTokenType.COMMENT -> SyntaxColors.comment
-                    SyntaxTokenType.STRING -> SyntaxColors.string
-                    SyntaxTokenType.KEYWORD -> SyntaxColors.keyword
-                    SyntaxTokenType.NUMBER -> SyntaxColors.number
-                    SyntaxTokenType.TEXT -> SyntaxColors.defaultText
-                }
-                withStyle(SpanStyle(color = color)) {
-                    append(matched.value)
-                }
-                currentIndex = matchResultLastIndex(matched)
-            } else {
-                withStyle(SpanStyle(color = SyntaxColors.defaultText)) {
-                    append(text[currentIndex].toString())
-                }
-                currentIndex++
-            }
-        }
-    }
-}
-
-private fun matchResultLastIndex(match: MatchResult): Int {
-    return match.range.last + 1
 }
 
 @Preview(showBackground = true)
