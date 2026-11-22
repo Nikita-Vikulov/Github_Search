@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
+import com.example.githubsearch.presentation.common.LanguageBadge
 import com.example.githubsearch.presentation.common.StateMessage
 import com.example.githubsearch.presentation.theme.Dimens
 import org.orbitmvi.orbit.compose.collectAsState
@@ -38,21 +39,21 @@ fun DetailsScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+    val onIntent: (Intent) -> Unit = { viewModel.processIntent(it) }
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is DetailsContract.SideEffect.ShowToast -> {
+            is ShowToast -> {
                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
             }
-            is DetailsContract.SideEffect.ShowToastRes -> {
+            is ShowToastRes -> {
                 Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     LaunchedEffect(user) {
-        viewModel.insert(user)
-        viewModel.getReposByLogin(user.login)
+        onIntent(LoadUserRepos(user))
     }
 
     Scaffold(
@@ -124,7 +125,7 @@ fun DetailsScreen(
 
 @Composable
 fun DetailsStateContent(
-    state: DetailsContract.State,
+    state: State,
     onRepoClick: (Repository) -> Unit
 ) {
     when {
@@ -166,14 +167,24 @@ fun RepoItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.paddingLarge)
+                .padding(Dimens.paddingLarge),
+            verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
         ) {
-            Text(
-                text = repo.name.orEmpty(),
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = repo.name.orEmpty(),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                if (!repo.language.isNullOrBlank()) {
+                    LanguageBadge(language = repo.language)
+                }
+            }
             if (!repo.description.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(Dimens.paddingSmall))
                 Text(
                     text = repo.description,
                     style = MaterialTheme.typography.bodyMedium,
@@ -189,10 +200,10 @@ fun RepoItem(
 fun DetailsScreenSuccessPreview() {
     com.example.githubsearch.presentation.theme.GithubSearchTheme {
         DetailsStateContent(
-            state = DetailsContract.State(
+            state = State(
                 repos = listOf(
-                    Repository(id = 1, name = "Hello-World", description = "My first repo on GitHub"),
-                    Repository(id = 2, name = "Spoon-Knife", description = "Demo repository for forking")
+                    Repository(id = 1, name = "Hello-World", description = "My first repo on GitHub", language = "Kotlin"),
+                    Repository(id = 2, name = "Spoon-Knife", description = "Demo repository for forking", language = "JavaScript")
                 )
             ),
             onRepoClick = {}
@@ -205,7 +216,7 @@ fun DetailsScreenSuccessPreview() {
 fun DetailsScreenLoadingPreview() {
     com.example.githubsearch.presentation.theme.GithubSearchTheme {
         DetailsStateContent(
-            state = DetailsContract.State(isLoading = true),
+            state = State(isLoading = true),
             onRepoClick = {}
         )
     }

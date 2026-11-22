@@ -41,17 +41,21 @@ fun FileViewerScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+    val onIntent: (Intent) -> Unit = { viewModel.processIntent(it) }
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is FileViewerContract.SideEffect.ShowToast -> {
+            is ShowToast -> {
                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+            }
+            is ShowToastRes -> {
+                Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     LaunchedEffect(downloadUrl) {
-        viewModel.loadFile(downloadUrl)
+        onIntent(LoadFile(downloadUrl))
     }
 
     FileViewerContent(
@@ -65,7 +69,7 @@ fun FileViewerScreen(
 @Composable
 fun FileViewerContent(
     fileName: String,
-    state: FileViewerContract.State,
+    state: State,
     onBackClick: () -> Unit
 ) {
     val verticalScrollState = rememberScrollState()
@@ -210,7 +214,7 @@ fun FileViewerPreview() {
     GithubSearchTheme {
         FileViewerContent(
             fileName = "MainActivity.kt",
-            state = FileViewerContract.State(
+            state = State(
                 content = "package com.example\n\nfun main() {\n    val message = \"Hello, World!\"\n    println(message)\n}"
             ),
             onBackClick = {}

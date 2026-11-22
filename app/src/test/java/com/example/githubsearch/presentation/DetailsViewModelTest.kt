@@ -6,8 +6,9 @@ import com.example.githubsearch.data.repository.ReposRepository
 import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.model.Repository
 import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.details.DetailsContract
 import com.example.githubsearch.presentation.details.DetailsViewModel
+import com.example.githubsearch.presentation.details.LoadUserRepos
+import com.example.githubsearch.presentation.details.ShowToastRes
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -36,13 +37,14 @@ class DetailsViewModelTest {
     @Test
     fun getReposByLogin_success_emitsReposState() = runTest {
         val login = "octocat"
+        val user = Users(login = login, id = 1)
         val mockRepos = listOf(Repository(id = 1, name = "Repo 1", login = login))
         whenever(repoRepository.getReposByLogin(login)).thenReturn(mockRepos)
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.getReposByLogin(login)
-            expectState { copy(isLoading = true, errorMessage = null) }
+            containerHost.processIntent(LoadUserRepos(user))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
             expectState { copy(isLoading = false, repos = mockRepos) }
         }
     }
@@ -50,24 +52,45 @@ class DetailsViewModelTest {
     @Test
     fun getReposByLogin_empty_postsToastSideEffect() = runTest {
         val login = "octocat"
+        val user = Users(login = login, id = 1)
         whenever(repoRepository.getReposByLogin(login)).thenReturn(emptyList())
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.getReposByLogin(login)
-            expectState { copy(isLoading = true, errorMessage = null) }
+            containerHost.processIntent(LoadUserRepos(user))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
             expectState { copy(isLoading = false, repos = emptyList()) }
-            expectSideEffect(DetailsContract.SideEffect.ShowToastRes(R.string.no_repos_found))
+            expectSideEffect(ShowToastRes(R.string.no_repos_found))
         }
     }
 
     @Test
-    fun insertUser_callsUserRepository() = runTest {
-        val user = Users(login = "octocat", id = 1, avatarUrl = "", reposUrl = "")
+    fun getReposByLogin_error_emitsErrorStateAndToast() = runTest {
+        val login = "octocat"
+        val user = Users(login = login, id = 1)
+        whenever(repoRepository.getReposByLogin(login)).thenThrow(RuntimeException("Network Error"))
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.insert(user)
+            containerHost.processIntent(LoadUserRepos(user))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
+            expectState { copy(isLoading = false, errorMessageResId = R.string.unknown_error) }
+            expectSideEffect(ShowToastRes(R.string.unknown_error))
+        }
+    }
+
+    @Test
+    fun loadUserRepos_insertsUserAndEmitsReposState() = runTest {
+        val login = "octocat"
+        val user = Users(login = login, id = 1, avatarUrl = "", reposUrl = "")
+        val mockRepos = listOf(Repository(id = 1, name = "Repo 1", login = login))
+        whenever(repoRepository.getReposByLogin(login)).thenReturn(mockRepos)
+
+        viewModel.test(this) {
+            expectInitialState()
+            containerHost.processIntent(LoadUserRepos(user))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
+            expectState { copy(isLoading = false, repos = mockRepos) }
         }
 
         verify(userRepository).insertUser(user)

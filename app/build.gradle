@@ -6,6 +6,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -114,4 +115,17 @@ dependencies {
     testImplementation 'org.orbit-mvi:orbit-test:9.0.0'
 
     debugImplementation 'androidx.compose.ui:ui-tooling'
+}
+
+detekt {
+    config = files("$rootDir/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
+tasks.withType(io.gitlab.arturbosch.detekt.Detekt).configureEach {
+    reports {
+        html.required.set(false)
+        xml.required.set(false)
+        txt.required.set(true)
+    }
 }

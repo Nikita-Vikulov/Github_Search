@@ -23,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.Users
@@ -32,6 +31,7 @@ import com.example.githubsearch.presentation.theme.Dimens
 import kotlinx.coroutines.delay
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,13 +44,14 @@ fun UsersScreen(
     var searchQuery by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
+    val onIntent: (Intent) -> Unit = { viewModel.processIntent(it) }
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is UsersContract.SideEffect.ShowToast -> {
+            is ShowToast -> {
                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
             }
-            is UsersContract.SideEffect.ShowToastRes -> {
+            is ShowToastRes -> {
                 Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
             }
         }
@@ -58,8 +59,8 @@ fun UsersScreen(
 
     LaunchedEffect(searchQuery) {
         if (searchQuery.isNotBlank()) {
-            delay(500)
-            viewModel.getUsersByLogin(searchQuery.trim())
+            delay(500.milliseconds)
+            onIntent(SearchUsers(searchQuery.trim()))
         }
     }
 
@@ -91,7 +92,7 @@ fun UsersScreen(
                 placeholder = { Text(stringResource(R.string.enter_user_name)) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(Dimens.cornerRadiusNormal),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -114,7 +115,7 @@ fun UsersScreen(
 
 @Composable
 fun UsersStateContent(
-    state: UsersContract.State,
+    state: State,
     onUserClick: (Users) -> Unit
 ) {
     when {
@@ -184,7 +185,7 @@ fun UserItem(
 fun UsersScreenSuccessPreview() {
     com.example.githubsearch.presentation.theme.GithubSearchTheme {
         UsersStateContent(
-            state = UsersContract.State(
+            state = State(
                 users = listOf(
                     Users(id = 1, login = "octocat"),
                     Users(id = 2, login = "torvalds")
@@ -200,7 +201,7 @@ fun UsersScreenSuccessPreview() {
 fun UsersScreenLoadingPreview() {
     com.example.githubsearch.presentation.theme.GithubSearchTheme {
         UsersStateContent(
-            state = UsersContract.State(isLoading = true),
+            state = State(isLoading = true),
             onUserClick = {}
         )
     }

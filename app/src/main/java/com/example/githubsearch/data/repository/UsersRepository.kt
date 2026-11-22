@@ -25,7 +25,7 @@ class UsersRepository(
             } else {
                 usersDao.getUsersByLogin(searchQuery)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             usersDao.getUsersByLogin(searchQuery)
         }
     }

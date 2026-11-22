@@ -29,7 +29,7 @@ class ReposRepository(
             } else {
                 reposDao.getReposByLogin(login)
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             reposDao.getReposByLogin(login)
         }
     }
@@ -46,7 +46,7 @@ class ReposRepository(
             } else {
                 emptyList()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
     }
@@ -56,7 +56,7 @@ class ReposRepository(
             if (downloadUrl.isBlank()) return ""
             val response = apiService.getFileContent(downloadUrl)
             response.body()?.string().orEmpty()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             ""
         }
     }

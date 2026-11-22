@@ -7,6 +7,7 @@ import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.model.Users
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.Syntax
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
@@ -14,26 +15,32 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val userRepository: UsersRepository,
     private val repoRepository: ReposRepository
-) : ContainerHost<DetailsContract.State, DetailsContract.SideEffect>, ViewModel() {
+) : ContainerHost<State, SideEffect>, ViewModel() {
 
-    override val container = container<DetailsContract.State, DetailsContract.SideEffect>(DetailsContract.State())
+    override val container = container<State, SideEffect>(State())
 
-    fun getReposByLogin(login: String) = intent {
-        reduce { state.copy(isLoading = true, errorMessage = null) }
+    fun processIntent(intent: Intent) = when (intent) {
+        is LoadUserRepos -> loadUserRepos(intent.user)
+    }
+
+    private inline fun intentCatching(
+        crossinline block: suspend Syntax<State, SideEffect>.() -> Unit
+    ) = intent {
         try {
-            val repos = repoRepository.getReposByLogin(login)
-            reduce { state.copy(isLoading = false, repos = repos) }
-            if (repos.isEmpty()) {
-                postSideEffect(DetailsContract.SideEffect.ShowToastRes(R.string.no_repos_found))
-            }
-        } catch (e: Exception) {
-            val errorMsg = e.localizedMessage.orEmpty().ifBlank { "Unknown error" }
-            reduce { state.copy(isLoading = false, errorMessage = errorMsg) }
-            postSideEffect(DetailsContract.SideEffect.ShowToast(errorMsg))
+            block()
+        } catch (_: Exception) {
+            reduce { state.copy(isLoading = false, errorMessageResId = R.string.unknown_error) }
+            postSideEffect(ShowToastRes(R.string.unknown_error))
         }
     }
 
-    fun insert(user: Users) = intent {
+    private fun loadUserRepos(user: Users) = intentCatching {
         userRepository.insertUser(user)
+        reduce { state.copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
+        val repos = repoRepository.getReposByLogin(user.login)
+        reduce { state.copy(isLoading = false, repos = repos) }
+        if (repos.isEmpty()) {
+            postSideEffect(ShowToastRes(R.string.no_repos_found))
+        }
     }
 }

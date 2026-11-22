@@ -32,7 +32,7 @@ fun GithubNavGraph() {
             UsersScreen(
                 viewModel = viewModel,
                 onUserClick = { user ->
-                    val encodedAvatar = Uri.encode(user.avatarUrl ?: "")
+                    val encodedAvatar = Uri.encode(user.avatarUrl.orEmpty())
                     val login = Uri.encode(user.login)
                     navController.navigate("details/$login/$encodedAvatar/${user.id}")
                 },
@@ -50,8 +50,8 @@ fun GithubNavGraph() {
                 navArgument("id") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val login = Uri.decode(backStackEntry.arguments?.getString("login") ?: "")
-            val avatarUrl = Uri.decode(backStackEntry.arguments?.getString("avatarUrl") ?: "")
+            val login = Uri.decode(backStackEntry.arguments?.getString("login").orEmpty())
+            val avatarUrl = Uri.decode(backStackEntry.arguments?.getString("avatarUrl").orEmpty())
             val id = backStackEntry.arguments?.getInt("id") ?: 0
 
             val user = Users(login = login, id = id, avatarUrl = avatarUrl, reposUrl = "")
@@ -61,10 +61,10 @@ fun GithubNavGraph() {
                 user = user,
                 viewModel = viewModel,
                 onRepoClick = { repo ->
-                    val name = Uri.encode(repo.name ?: "Unknown")
-                    val fullName = Uri.encode(repo.fullName ?: "")
-                    val language = Uri.encode(repo.language ?: "")
-                    val description = Uri.encode(repo.description ?: "")
+                    val name = Uri.encode(repo.name.orEmpty().ifBlank { "Unknown" })
+                    val fullName = Uri.encode(repo.fullName.orEmpty())
+                    val language = Uri.encode(repo.language.orEmpty())
+                    val description = Uri.encode(repo.description.orEmpty())
                     navController.navigate("repo_detail/$name/$fullName/$language/${repo.forksCount}/$description")
                 },
                 onBackClick = {
@@ -78,7 +78,7 @@ fun GithubNavGraph() {
             HistoryScreen(
                 viewModel = viewModel,
                 onUserClick = { user ->
-                    val encodedAvatar = Uri.encode(user.avatarUrl ?: "")
+                    val encodedAvatar = Uri.encode(user.avatarUrl.orEmpty())
                     val login = Uri.encode(user.login)
                     navController.navigate("details/$login/$encodedAvatar/${user.id}")
                 },
@@ -98,11 +98,11 @@ fun GithubNavGraph() {
                 navArgument("description") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val name = Uri.decode(backStackEntry.arguments?.getString("name") ?: "")
-            val fullName = Uri.decode(backStackEntry.arguments?.getString("fullName") ?: "")
-            val language = Uri.decode(backStackEntry.arguments?.getString("language") ?: "")
+            val name = Uri.decode(backStackEntry.arguments?.getString("name").orEmpty())
+            val fullName = Uri.decode(backStackEntry.arguments?.getString("fullName").orEmpty())
+            val language = Uri.decode(backStackEntry.arguments?.getString("language").orEmpty())
             val forksCount = backStackEntry.arguments?.getInt("forksContext") ?: 0
-            val description = Uri.decode(backStackEntry.arguments?.getString("description") ?: "")
+            val description = Uri.decode(backStackEntry.arguments?.getString("description").orEmpty())
 
             val repository = Repository(
                 name = name,
@@ -132,8 +132,8 @@ fun GithubNavGraph() {
                 navArgument("downloadUrl") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val fileName = Uri.decode(backStackEntry.arguments?.getString("fileName") ?: "")
-            val downloadUrl = Uri.decode(backStackEntry.arguments?.getString("downloadUrl") ?: "")
+            val fileName = Uri.decode(backStackEntry.arguments?.getString("fileName").orEmpty())
+            val downloadUrl = Uri.decode(backStackEntry.arguments?.getString("downloadUrl").orEmpty())
 
             FileViewerScreen(
                 fileName = fileName,

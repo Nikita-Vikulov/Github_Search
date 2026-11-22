@@ -9,14 +9,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val userRepository: UsersRepository
-) : ContainerHost<HistoryContract.State, Nothing>, ViewModel() {
+    userRepository: UsersRepository
+) : ContainerHost<State, SideEffect>, ViewModel() {
 
-    override val container = container<HistoryContract.State, Nothing>(HistoryContract.State()) {
+    override val container = container<State, SideEffect>(State()) {
         userRepository.allUsers.collect { list ->
             intent {
                 reduce { state.copy(users = list) }
             }
+        }
+    }
+
+    fun processIntent(intent: Intent) = when (intent) {
+        is UserClicked -> intent {
+            postSideEffect(NavigateToDetails(intent.user))
+        }
+        is BackClicked -> intent {
+            postSideEffect(NavigateBack)
         }
     }
 }

@@ -11,7 +11,7 @@ data class RepoContentItem(
     @SerializedName("path")
     val path: String,
     @SerializedName("type")
-    val type: String, // "file" or "dir"
+    val type: RepoItemType = RepoItemType.FILE,
     @SerializedName("size")
     val size: Long? = null,
     @SerializedName("download_url")

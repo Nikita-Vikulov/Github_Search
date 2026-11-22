@@ -28,4 +28,7 @@
     <string name="file_size_bytes">%d bytes</string>
     <string name="contents_root">Contents (Root)</string>
     <string name="contents_path">Path: %s</string>
+    <string name="invalid_repo_info">Invalid repository info</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="failed_load_file">Failed to load file</string>
 </resources>

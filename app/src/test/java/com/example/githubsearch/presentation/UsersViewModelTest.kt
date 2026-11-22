@@ -4,7 +4,8 @@ import com.example.githubsearch.MainDispatcherRule
 import com.example.githubsearch.R
 import com.example.githubsearch.data.repository.UsersRepository
 import com.example.githubsearch.domain.model.Users
-import com.example.githubsearch.presentation.users.UsersContract
+import com.example.githubsearch.presentation.users.SearchUsers
+import com.example.githubsearch.presentation.users.ShowToastRes
 import com.example.githubsearch.presentation.users.UsersViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -37,8 +38,8 @@ class UsersViewModelTest {
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.getUsersByLogin(query)
-            expectState { copy(isLoading = true, errorMessage = null) }
+            containerHost.processIntent(SearchUsers(query))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
             expectState { copy(isLoading = false, users = mockUsers) }
         }
     }
@@ -50,10 +51,10 @@ class UsersViewModelTest {
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.getUsersByLogin(query)
-            expectState { copy(isLoading = true, errorMessage = null) }
+            containerHost.processIntent(SearchUsers(query))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
             expectState { copy(isLoading = false, users = emptyList()) }
-            expectSideEffect(UsersContract.SideEffect.ShowToastRes(R.string.no_users_found))
+            expectSideEffect(ShowToastRes(R.string.no_users_found))
         }
     }
 
@@ -64,10 +65,10 @@ class UsersViewModelTest {
 
         viewModel.test(this) {
             expectInitialState()
-            containerHost.getUsersByLogin(query)
-            expectState { copy(isLoading = true, errorMessage = null) }
-            expectState { copy(isLoading = false, errorMessage = "Network Error") }
-            expectSideEffect(UsersContract.SideEffect.ShowToast("Network Error"))
+            containerHost.processIntent(SearchUsers(query))
+            expectState { copy(isLoading = true, errorMessage = null, errorMessageResId = null) }
+            expectState { copy(isLoading = false, errorMessageResId = R.string.unknown_error) }
+            expectSideEffect(ShowToastRes(R.string.unknown_error))
         }
     }
 }

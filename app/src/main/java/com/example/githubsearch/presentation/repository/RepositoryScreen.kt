@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.githubsearch.R
 import com.example.githubsearch.domain.model.RepoContentItem
+import com.example.githubsearch.domain.model.RepoItemType
 import com.example.githubsearch.domain.model.Repository
+import com.example.githubsearch.presentation.common.LanguageBadge
 import com.example.githubsearch.presentation.common.StateMessage
 import com.example.githubsearch.presentation.theme.Dimens
 import com.example.githubsearch.presentation.theme.GithubSearchTheme
@@ -37,38 +39,29 @@ fun RepositoryScreen(
 ) {
     val state by viewModel.collectAsState()
     val context = LocalContext.current
+    val onIntent: (Intent) -> Unit = { viewModel.processIntent(it) }
 
     viewModel.collectSideEffect { effect ->
         when (effect) {
-            is RepositoryContract.SideEffect.ShowToast -> {
+            is NavigateToFile -> onFileClick(effect.fileItem)
+            is NavigateBack -> onBackClick()
+            is ShowToast -> {
                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
             }
-            is RepositoryContract.SideEffect.ShowToastRes -> {
+            is ShowToastRes -> {
                 Toast.makeText(context, context.getString(effect.messageResId), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     LaunchedEffect(repository) {
-        if (state.contents.isEmpty() && !state.isLoading && state.currentPath.isBlank()) {
-            viewModel.loadContents(repository, "", pushToStack = false)
-        }
+        onIntent(LoadInitial(repository))
     }
 
     RepositoryContent(
         repository = repository,
         state = state,
-        onItemClick = { item ->
-            when {
-                item.type == "dir" -> viewModel.loadContents(repository, item.path, pushToStack = true)
-                !item.downloadUrl.isNullOrBlank() -> onFileClick(item)
-            }
-        },
-        onBackClick = {
-            if (!viewModel.onBackPressed()) {
-                onBackClick()
-            }
-        }
+        onIntent = onIntent
     )
 }
 
@@ -76,13 +69,12 @@ fun RepositoryScreen(
 @Composable
 fun RepositoryContent(
     repository: Repository,
-    state: RepositoryContract.State,
-    onItemClick: (RepoContentItem) -> Unit,
-    onBackClick: () -> Unit
+    state: State,
+    onIntent: (Intent) -> Unit
 ) {
     val sortedContents = remember(state.contents) {
         state.contents.sortedWith(
-            compareBy<RepoContentItem> { if (it.type == "dir") 0 else 1 }
+            compareBy<RepoContentItem> { if (it.type == RepoItemType.DIRECTORY) 0 else 1 }
                 .thenBy { it.name.lowercase() }
         )
     }
@@ -92,7 +84,7 @@ fun RepositoryContent(
             TopAppBar(
                 title = { Text(repository.name.orEmpty()) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { onIntent(BackClicked) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -116,11 +108,17 @@ fun RepositoryContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(Dimens.paddingNormal),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
                 ) {
                     Text(text = stringResource(R.string.repo_full_name, repository.fullName.orEmpty()), style = MaterialTheme.typography.bodyMedium)
                     if (!repository.language.isNullOrBlank()) {
-                        Text(text = stringResource(R.string.repo_language, repository.language), style = MaterialTheme.typography.bodyMedium)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(text = stringResource(R.string.language), style = MaterialTheme.typography.bodyMedium)
+                            LanguageBadge(language = repository.language)
+                        }
                     }
                     Text(text = stringResource(R.string.repo_forks, repository.forksCount), style = MaterialTheme.typography.bodyMedium)
                     if (!repository.description.isNullOrBlank()) {
@@ -154,12 +152,19 @@ fun RepositoryContent(
                             verticalArrangement = Arrangement.spacedBy(Dimens.paddingSmall)
                         ) {
                             items(sortedContents, key = { it.path }) { item ->
-                                RepoContentRow(item = item, onItemClick = { onItemClick(item) })
+                                RepoContentRow(
+                                    item = item,
+                                    onItemClick = { onIntent(ItemClicked(repository, item)) }
+                                )
                             }
                         }
                     }
                     !state.errorMessage.isNullOrBlank() -> StateMessage(
                         text = state.errorMessage,
+                        isError = true
+                    )
+                    state.errorMessageResId != null -> StateMessage(
+                        text = stringResource(state.errorMessageResId),
                         isError = true
                     )
                     else -> StateMessage(text = stringResource(R.string.directory_empty))
@@ -175,12 +180,12 @@ fun RepoContentRow(
     onItemClick: () -> Unit
 ) {
     val icon = when (item.type) {
-        "dir" -> Icons.Default.Folder
-        else -> Icons.AutoMirrored.Filled.InsertDriveFile
+        RepoItemType.DIRECTORY -> Icons.Default.Folder
+        RepoItemType.FILE -> Icons.AutoMirrored.Filled.InsertDriveFile
     }
     val tint = when (item.type) {
-        "dir" -> MaterialTheme.colorScheme.primary
-        else -> MaterialTheme.colorScheme.secondary
+        RepoItemType.DIRECTORY -> MaterialTheme.colorScheme.primary
+        RepoItemType.FILE -> MaterialTheme.colorScheme.secondary
     }
 
     OutlinedCard(
@@ -191,13 +196,13 @@ fun RepoContentRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp)
+                .heightIn(min = Dimens.cardMinHeight)
                 .padding(horizontal = Dimens.paddingNormal, vertical = Dimens.paddingMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = item.type,
+                contentDescription = item.type.name,
                 tint = tint
             )
 
@@ -210,7 +215,7 @@ fun RepoContentRow(
                     text = item.name,
                     style = MaterialTheme.typography.bodyLarge
                 )
-                if (item.type == "file" && item.size != null) {
+                if (item.type == RepoItemType.FILE && item.size != null) {
                     Text(
                         text = stringResource(R.string.file_size_bytes, item.size),
                         style = MaterialTheme.typography.bodySmall,
@@ -235,15 +240,14 @@ fun RepositoryScreenPreview() {
                 forksCount = 42,
                 description = "Android GitHub Search App with Clean Architecture & Compose"
             ),
-            state = RepositoryContract.State(
+            state = State(
                 contents = listOf(
-                    RepoContentItem(name = "README.md", path = "README.md", type = "file", size = 1024, downloadUrl = "https://example.com"),
-                    RepoContentItem(name = "app", path = "app", type = "dir"),
-                    RepoContentItem(name = "gradle", path = "gradle", type = "dir")
+                    RepoContentItem(name = "README.md", path = "README.md", type = RepoItemType.FILE, size = 1024, downloadUrl = "https://example.com"),
+                    RepoContentItem(name = "app", path = "app", type = RepoItemType.DIRECTORY),
+                    RepoContentItem(name = "gradle", path = "gradle", type = RepoItemType.DIRECTORY)
                 )
             ),
-            onItemClick = {},
-            onBackClick = {}
+            onIntent = {}
         )
     }
 }

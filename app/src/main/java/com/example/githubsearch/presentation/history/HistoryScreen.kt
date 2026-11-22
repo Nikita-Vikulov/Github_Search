@@ -6,8 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,6 +16,7 @@ import com.example.githubsearch.domain.model.Users
 import com.example.githubsearch.presentation.theme.Dimens
 import com.example.githubsearch.presentation.users.UserItem
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,27 +26,33 @@ fun HistoryScreen(
     onBackClick: () -> Unit
 ) {
     val state by viewModel.collectAsState()
+    val onIntent: (Intent) -> Unit = { viewModel.processIntent(it) }
+
+    viewModel.collectSideEffect { effect ->
+        when (effect) {
+            is NavigateToDetails -> onUserClick(effect.user)
+            is NavigateBack -> onBackClick()
+        }
+    }
 
     HistoryContent(
-        users = state.users,
-        onUserClick = onUserClick,
-        onBackClick = onBackClick
+        state = state,
+        onIntent = onIntent
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryContent(
-    users: List<Users>,
-    onUserClick: (Users) -> Unit,
-    onBackClick: () -> Unit
+    state: State,
+    onIntent: (Intent) -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.history_title)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = { onIntent(BackClicked) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back)
@@ -63,7 +69,7 @@ fun HistoryContent(
                 .padding(Dimens.paddingLarge),
             contentAlignment = Alignment.Center
         ) {
-            if (users.isEmpty()) {
+            if (state.users.isEmpty()) {
                 Text(
                     text = stringResource(R.string.history_empty),
                     style = MaterialTheme.typography.bodyLarge
@@ -73,8 +79,8 @@ fun HistoryContent(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(Dimens.paddingMedium)
                 ) {
-                    items(users, key = { it.id }) { user ->
-                        UserItem(user = user, onClick = { onUserClick(user) })
+                    items(state.users, key = { it.id }) { user ->
+                        UserItem(user = user, onClick = { onIntent(UserClicked(user)) })
                     }
                 }
             }
@@ -87,12 +93,13 @@ fun HistoryContent(
 fun HistoryScreenPreview() {
     com.example.githubsearch.presentation.theme.GithubSearchTheme {
         HistoryContent(
-            users = listOf(
-                Users(id = 1, login = "octocat"),
-                Users(id = 2, login = "torvalds")
+            state = State(
+                users = listOf(
+                    Users(id = 1, login = "octocat"),
+                    Users(id = 2, login = "torvalds")
+                )
             ),
-            onUserClick = {},
-            onBackClick = {}
+            onIntent = {}
         )
     }
 }
